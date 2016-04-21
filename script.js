@@ -1,5 +1,5 @@
 /**
- * Created by antoine on 20/04/16.
+ * Created by 4r3 on 20/04/16.
  */
 //GLOBALS
 var gl;
@@ -11,6 +11,7 @@ var pMatrix = mat4.create();
 
 //textures
 var texture0;
+var texture1;
 
 //interaction
 var drawStyle;
@@ -171,14 +172,21 @@ function initTexture()
         handleLoadedTexture(texture0)
     }
 
-    texture0.image.src = "./img/moon.gif"; // note : croos origin problem with chrome outside webserver
-    texture0.image.src = "./img/earth.jpg"; // note : croos origin problem with chrome outside webserver
+    texture0.image.src = "./img/sun.jpg"; // note : croos origin problem with chrome outside webserver
+
+    texture1 = gl.createTexture();
+    texture1.image = new Image();
+    texture1.image.onload = function()
+    {
+        handleLoadedTexture(texture1)
+    }
+    texture1.image.src = "./img/earth.jpg"; // note : croos origin problem with chrome outside webserver
 }
 
 function handleLoadedTexture(texture)
 {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.bindTexture(gl.TEXTURE_2D, texture0);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
@@ -217,8 +225,9 @@ function drawScene()
     mat4.translate(mvMatrix, [camX, 0.0, camZ]);
     mat4.translate(mvMatrix, [0, 0.0, -10.0]);
 
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture0);
+    gl.activeTexture(gl.TEXTURE1);
+    //gl.bindTexture(gl.TEXTURE_2D, texture0);
+    gl.bindTexture(gl.TEXTURE_2D, texture1);
     gl.uniform1i(shaderProgram.samplerUniform, 0);
 
     rootObject.draw();
@@ -226,29 +235,16 @@ function drawScene()
 
 function initWorldObjects()
 {
-    var obj = 12;
 
-    rootObject = new triangle(null);
-    rootObject.translate([0,-1,0.5]);
+    rootObject = new sphere(null);
+    //rootObject.translate([0,-1,0.5]);
     objects.push(rootObject);
-
-    for (var i=0; i < obj; i++)
-    {
-        var newObject = new triangle(rootObject);
-        objects.push(newObject);
-        newObject.rotate(-i*Math.PI/12, [0,0,1])
-        newObject.translate([2,0,i/100])
-        newObject.scale([1-i/12,1-i/12,1-i/12])
-    }
-
-    var newObject = new square(rootObject);
-    objects.push(newObject);
-    newObject.translate([0,2,0]);
+    rootObject.texture = texture0;
 
     newObject = new sphere(rootObject);
+    newObject.texture = texture1;
     objects.push(newObject);
-    newObject.translate([2,2,0]);
-
+    newObject.translate([4,0,0]);
 
     return rootObject;
 }
@@ -281,9 +277,9 @@ function webGLStart() {
 
     //webGL
     initGL(canvas);
-    initShaders()
-    rootObject = initWorldObjects();
+    initShaders();
     initTexture();
+    rootObject = initWorldObjects();
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
@@ -363,6 +359,9 @@ function handleKeyDown(event)
             break;
         case 34: //pageDown
             camHeight-=degToRad(1);
+            break;
+        case 116:
+            window.location.reload();
             break;
 
         default:
