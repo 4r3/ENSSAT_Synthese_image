@@ -10,6 +10,7 @@ function worldObject(parent)
 	this.vertexPositionBuffer = null;
 	this.vertexTextureCoordBuffer = null;
 	this.vertexIndexBuffer = null;
+	this.vertexNormalsBuffer = null;
 	this.toggled = true;
 	// il faudra sans doute ajouter des choses ici pour gérer les nomales
 	this.texture = null;
@@ -75,8 +76,9 @@ worldObject.prototype.draw = function()
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
 		gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.vertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-		// il faudra sans doute ajouter des choses ici pour gérer les nomales
-		
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
+		gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
 		setMatrixUniforms();
 		if(this.vertexIndexBuffer == null)
 		{
