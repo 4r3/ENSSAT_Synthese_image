@@ -10,8 +10,7 @@ var mvMatrixStack = [];
 var pMatrix = mat4.create();
 
 //textures
-var texture0;
-var texture1;
+var textures =[];
 
 //interaction
 var drawStyle;
@@ -46,6 +45,20 @@ var pasLat = 3;
 var pasLong = 6;
 var tetaMax = 360;
 var phiMax = 90;
+
+
+//radius in km
+R_sol = 696342;
+R_earth = 6378;
+R_moon = 1737.4;
+
+//distance in AU
+D_earth = 1;
+D_moon = 0.00257;
+
+//scale factor
+Ks = 1/3;
+Ks2 = 100;
 
 
 
@@ -163,24 +176,23 @@ function setMatrixUniforms()
 
 
 //TEXTURES
-function initTexture()
+function initTextures()
 {
-    texture0 = gl.createTexture();
-    texture0.image = new Image();
-    texture0.image.onload = function()
-    {
-        handleLoadedTexture(texture0)
-    }
 
-    texture0.image.src = "./img/sun.jpg"; // note : croos origin problem with chrome outside webserver
+    initTexture(0,"./img/sun.jpg");
+    initTexture(1,"./img/earth.jpg");
+    initTexture(2,"./img/moon.gif");
 
-    texture1 = gl.createTexture();
-    texture1.image = new Image();
-    texture1.image.onload = function()
+}
+
+function initTexture(index,src) {
+    textures[index] = gl.createTexture();
+    textures[index].image = new Image();
+    textures[index].image.onload = function()
     {
-        handleLoadedTexture(texture1)
+        handleLoadedTexture(textures[index])
     }
-    texture1.image.src = "./img/earth.jpg"; // note : croos origin problem with chrome outside webserver
+    textures[index].image.src = src;
 }
 
 function handleLoadedTexture(texture)
@@ -203,13 +215,25 @@ function degToRad(degrees)
 }
 
 
-function pol2Cart(longi, lat, resLongi, resLat)
+function pol2Cart(longi, lat,R, resLongi, resLat)
 {
     return [
-        Math.cos(degToRad(lat))*Math.sin(degToRad(longi)),
-        Math.sin(degToRad(lat)),
-        Math.cos(degToRad(lat))*Math.cos(degToRad(longi))
+        R*Math.cos(degToRad(lat))*Math.sin(degToRad(longi)),
+        R*Math.sin(degToRad(lat)),
+        R*Math.cos(degToRad(lat))*Math.cos(degToRad(longi))
     ];
+}
+
+function AU2km(Au) {
+    return Au * 149597870.7;
+}
+
+function km2AU(km) {
+    return km / 149597870.7;
+}
+
+function normalizeSize(km) {
+    return Math.pow(km,Ks)/Ks2;
 }
 
 function drawScene()
@@ -223,12 +247,7 @@ function drawScene()
     mat4.rotate(mvMatrix, -camHeight, [1, 0, 0]);
 
     mat4.translate(mvMatrix, [camX, 0.0, camZ]);
-    mat4.translate(mvMatrix, [0, 0.0, -10.0]);
-
-    gl.activeTexture(gl.TEXTURE1);
-    //gl.bindTexture(gl.TEXTURE_2D, texture0);
-    gl.bindTexture(gl.TEXTURE_2D, texture1);
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
+    mat4.translate(mvMatrix, [0, 0.0, -15.0]);
 
     rootObject.draw();
 }
@@ -236,15 +255,25 @@ function drawScene()
 function initWorldObjects()
 {
 
-    rootObject = new sphere(null);
+    rootObject = new sphere(null,250*km2AU(R_sol));
     //rootObject.translate([0,-1,0.5]);
-    objects.push(rootObject);
-    rootObject.texture = texture0;
+    objects.push(rootObject,2);
+    rootObject.texture = textures[0];
 
-    newObject = new sphere(rootObject);
-    newObject.texture = texture1;
-    objects.push(newObject);
-    newObject.translate([4,0,0]);
+    console.log(normalizeSize(R_earth));
+    console.log(normalizeSize(R_sol));
+    console.log(normalizeSize(AU2km(D_earth)));
+    console.log(normalizeSize(AU2km(D_moon)));
+
+    var earth = new sphere(rootObject,normalizeSize(R_earth));
+    earth.texture = textures[1];
+    objects.push(earth);
+    earth.translate([normalizeSize(AU2km(D_earth)),0,0]);
+
+    var moon = new sphere(earth,normalizeSize(R_moon));
+    moon.texture = textures[2];
+    objects.push(moon);
+    moon.translate([normalizeSize(AU2km(D_moon)),0,0]);
 
     return rootObject;
 }
@@ -257,9 +286,6 @@ function animate()
     {
         elapsed = timeNow - lastTime;
 
-        rTri += (90 * elapsed) / 1000.0;
-        rSquare += (75 * elapsed) / 1000.0;
-        rSphere += (50 * elapsed) / 1000.0;
     }
     rootObject.animate(elapsed);
     lastTime = timeNow;
@@ -278,7 +304,7 @@ function webGLStart() {
     //webGL
     initGL(canvas);
     initShaders();
-    initTexture();
+    initTextures();
     rootObject = initWorldObjects();
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
