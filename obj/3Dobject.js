@@ -79,7 +79,38 @@ worldObject.prototype.draw = function()
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
 		gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+		var lighting = 1;
+		gl.uniform1i(shaderProgram.useLightingUniform, lighting);
+
+		if (lighting) {
+			gl.uniform3f(
+				shaderProgram.ambientColorUniform,
+				parseFloat(0.2),
+				parseFloat(0.2),
+				parseFloat(0.2)
+			);//TODO create vars for ambient light
+
+			var lightingDirection = [
+				parseFloat(0),
+				parseFloat(1),
+				parseFloat(0)
+			];//TODO create var for directional light direction
+
+			var adjustedLD = vec3.create();
+			vec3.normalize(lightingDirection, adjustedLD);
+			vec3.scale(adjustedLD, -1);
+			gl.uniform3fv(shaderProgram.lightingDirectionUniform, adjustedLD);
+
+			gl.uniform3f(
+				shaderProgram.directionalColorUniform,
+				parseFloat(50),
+				parseFloat(50),
+				parseFloat(50)
+			);//TODO create vars for directional light
+		}
+
 		setMatrixUniforms();
+
 		if(this.vertexIndexBuffer == null)
 		{
 			gl.drawArrays(drawStyle, 0, this.vertexPositionBuffer.numItems);
@@ -102,7 +133,6 @@ worldObject.prototype.draw = function()
 
 worldObject.prototype.animate = function(elapsedTime)
 {
-	//TODO adapt for planet rotation
 	//animate children
 
 	for(var i =0; i< this.children.length; i++)
