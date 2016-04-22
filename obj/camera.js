@@ -10,7 +10,7 @@ function camera(parent)
 
 camera.prototype.draw = function()
 {
-	mat4.multiply(mvMatrix, this.localTransformation);
+	mat4.multiply(mvMatrix, this.trans);
 
 	setMatrixUniforms();
 

@@ -48,15 +48,32 @@ var phiMax = 90;
 
 
 //radius in km
-R_sol = 696342;
+R_sun = 696342;
 R_earth = 6378;
-R_moon = 1737.4;
+R_moon = 1737;
+R_venus = 6051;
+
 
 //distance in AU
 D_earth = 1;
 D_moon = 0.00257;
+D_venus = 0.723332;
+
+//orbit speed in rad/day
+
+O_earth = 2*Math.PI/365;
+O_venus = 2*Math.PI/224.7;
+O_moon = 2*Math.PI/27.32;
+
+//revol speed in rad/day
+Re_sun = 2*Math.PI/29;
+Re_earth = 2*Math.PI;
+Re_venus = 2*Math.PI/-243;
+Re_moon = O_moon;
+
 
 //scale factor
+Kt=1;
 Ks = 1/3;
 Ks2 = 100;
 
@@ -182,6 +199,7 @@ function initTextures()
     initTexture(0,"./img/sun.jpg");
     initTexture(1,"./img/earth.jpg");
     initTexture(2,"./img/moon.gif");
+    initTexture(3,"./img/venus.jpg");
 
 }
 
@@ -247,7 +265,7 @@ function drawScene()
     mat4.rotate(mvMatrix, -camHeight, [1, 0, 0]);
 
     mat4.translate(mvMatrix, [camX, 0.0, camZ]);
-    mat4.translate(mvMatrix, [0, 0.0, -15.0]);
+    mat4.translate(mvMatrix, [0, 0.0, -40.0]);
 
     rootObject.draw();
 }
@@ -255,27 +273,27 @@ function drawScene()
 function initWorldObjects()
 {
 
-    rootObject = new sphere(null,250*km2AU(R_sol));
-    //rootObject.translate([0,-1,0.5]);
+    rootObject = new sphere(null,250*km2AU(R_sun));
     objects.push(rootObject,2);
     rootObject.texture = textures[0];
+    rootObject.revol = Re_sun;
 
-    console.log(normalizeSize(R_earth));
-    console.log(normalizeSize(R_sol));
-    console.log(normalizeSize(AU2km(D_earth)));
-    console.log(normalizeSize(AU2km(D_moon)));
-
-    var earth = new sphere(rootObject,normalizeSize(R_earth));
-    earth.texture = textures[1];
-    objects.push(earth);
-    earth.translate([normalizeSize(AU2km(D_earth)),0,0]);
-
-    var moon = new sphere(earth,normalizeSize(R_moon));
-    moon.texture = textures[2];
-    objects.push(moon);
-    moon.translate([normalizeSize(AU2km(D_moon)),0,0]);
+    var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
+    initObject(earth,R_moon,D_moon,2,O_moon,Re_moon);
+    initObject(rootObject,R_venus,D_venus,3,O_venus,Re_venus);
 
     return rootObject;
+}
+
+function initObject(parent,radius,distance,textureid,orbitParam,revol){
+    var newObject = new sphere(parent,normalizeSize(radius));
+    newObject.texture = textures[textureid];
+    objects.push(newObject);
+    newObject.translate([normalizeSize(AU2km(distance)),0,1]);
+    newObject.orbitParam = orbitParam;
+    newObject.revol = revol;
+
+    return newObject;
 }
 
 function animate()
