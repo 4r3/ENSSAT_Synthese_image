@@ -41,8 +41,8 @@ var objects = [];
 var rootObject;
 
 //geometry
-var pasLat = 3;
-var pasLong = 6;
+var pasLat = 90;
+var pasLong = 90;
 var tetaMax = 360;
 var phiMax = 90;
 
@@ -170,14 +170,12 @@ function initShaders()
 
     shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+    shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
     shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
-
     shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, "uUseLighting");
-
     shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
-
     shaderProgram.lightingDirectionUniform = gl.getUniformLocation(shaderProgram, "uLightingDirection");
-    shaderProgram.directionalColorUniform = gl.getUniformLocation(shaderProgram, "uDirectionalColor");
+    shaderProgram.directionalColorUniform = gl.getUniformLocation(shaderProgram, "uDirectionalColor");;
 
 }
 

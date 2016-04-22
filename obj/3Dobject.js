@@ -12,7 +12,6 @@ function worldObject(parent)
 	this.vertexIndexBuffer = null;
 	this.vertexNormalsBuffer = null;
 	this.toggled = true;
-	// il faudra sans doute ajouter des choses ici pour gérer les nomales
 	this.texture = null;
 
 	this.orbitParam = 0;
@@ -62,12 +61,12 @@ worldObject.prototype.draw = function()
 		}
 
 		mvPushMatrix();
-		mat4.multiply(mvMatrix, this.orbitmat);
-		mat4.multiply(mvMatrix, this.trans);
+		mat4.multiply(mvMatrix, this.orbitmat); //rotate on the rootObject position for orbit simulation
+		mat4.multiply(mvMatrix, this.trans);	//place the object at the right distance
 
 
 		mvPushMatrix();
-		mat4.multiply(mvMatrix, this.rotation);
+		mat4.multiply(mvMatrix, this.rotation); // used for the revolution of the object, cancelled after draw
 
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
@@ -85,9 +84,9 @@ worldObject.prototype.draw = function()
 		if (lighting) {
 			gl.uniform3f(
 				shaderProgram.ambientColorUniform,
-				parseFloat(0.2),
-				parseFloat(0.2),
-				parseFloat(0.2)
+				parseFloat(0.5),
+				parseFloat(0.5),
+				parseFloat(0.5)
 			);//TODO create vars for ambient light
 
 			var lightingDirection = [
