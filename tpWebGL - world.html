@@ -23,13 +23,19 @@
 	varying vec2 vTextureCoord;
 	varying vec3 vLightWeighting;
 
+	uniform float uAlpha;
+	uniform bool uUseBlending;
+
 	uniform sampler2D uSampler;
 
     void main(void)
 	{
 		mediump vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-		gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
-
+		/*if(!uUseBlending){
+			gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+		} else {*/
+			gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a * uAlpha);
+		//}
     }
 </script>
 

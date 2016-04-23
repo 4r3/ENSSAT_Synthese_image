@@ -13,6 +13,8 @@ function worldObject(parent)
 	this.vertexNormalsBuffer = null;
 	this.toggled = true;
 	this.texture = null;
+	this.blending = 0;
+	this.alpha = 1;
 
 	this.orbitParam = 0;
 	this.revol = 0;
@@ -78,15 +80,28 @@ worldObject.prototype.draw = function()
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
 		gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+		
+		
+		gl.uniform1f(shaderProgram.useBlending, 1);
+		if (this.blending) {
+			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+			gl.enable(gl.BLEND);
+			gl.disable(gl.DEPTH_TEST);
+			gl.uniform1f(shaderProgram.alphaUniform, this.alpha);
+		} else {
+			gl.disable(gl.BLEND);
+			gl.enable(gl.DEPTH_TEST); //TODO find why it make the scene bugging
+		}
+
 		var lighting = 1;
 		gl.uniform1i(shaderProgram.useLightingUniform, lighting);
 
 		if (lighting) {
 			gl.uniform3f(
 				shaderProgram.ambientColorUniform,
-				parseFloat(0.5),
-				parseFloat(0.5),
-				parseFloat(0.5)
+				0.5,
+				0.5,
+				0.5
 			);//TODO create vars for ambient light
 
 			var lightingDirection = [

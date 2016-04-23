@@ -115,7 +115,7 @@ function drawScene()
     mat4.identity(mvMatrix);
 
     gl.disable(gl.DEPTH_TEST);
-    skybox.draw();
+    //skybox.draw();  //TODO find how to re-activate
     gl.enable(gl.DEPTH_TEST);
 
     mat4.rotate(mvMatrix, -camHeight, [1, 0, 0]);
@@ -136,6 +136,8 @@ function initWorldObjects()
     objects.push(rootObject,2);
     rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
+    rootObject.alpha = 0.5;
+    rootObject.blending=1;
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
     initObject(earth,R_moon,D_moon,2,O_moon,Re_moon);
