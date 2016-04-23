@@ -90,9 +90,9 @@ worldObject.prototype.draw = function()
 			);//TODO create vars for ambient light
 
 			var lightingDirection = [
-				parseFloat(0),
-				parseFloat(10),
-				parseFloat(0)
+				parseFloat(-1),
+				parseFloat(-1),
+				parseFloat(-1)
 			];//TODO create var for directional light direction
 
 			var adjustedLD = vec3.create();

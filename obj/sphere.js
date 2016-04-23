@@ -26,7 +26,6 @@ sphere.prototype = new worldObject;
             {
 				vertices = vertices.concat(pol2Cart(longi, lat,R)); //A
 				normals = normals.concat(pol2Cart(longi, lat,1));
-				console.log(pol2Cart(longi, lat,1));
 				textureCoords = textureCoords.concat([longi/tetaMax, (90+lat)/(90+phiMax)]);
 				if(longi != tetaMax)
 				{

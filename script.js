@@ -41,8 +41,8 @@ var objects = [];
 var rootObject;
 
 //geometry
-var pasLat = 90;
-var pasLong = 90;
+var pasLat = 3;
+var pasLong = 6;
 var tetaMax = 360;
 var phiMax = 90;
 
@@ -62,7 +62,7 @@ D_venus = 0.723332;
 //orbit speed in rad/day
 
 O_earth = 2*Math.PI/365;
-O_venus = -2*Math.PI/224.7;
+O_venus = 2*Math.PI/224.7;
 O_moon = 2*Math.PI/27.32;
 
 //revol speed in rad/day
@@ -199,6 +199,12 @@ function setMatrixUniforms()
 {
     gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
     gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+
+    var normalMatrix = mat3.create();
+    mat4.toInverseMat3(mvMatrix, normalMatrix);
+    mat3.transpose(normalMatrix);
+    gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
+
 }
 
 
@@ -283,7 +289,7 @@ function drawScene()
 function initWorldObjects()
 {
 
-    rootObject = new square(null);//new sphere(null,250*km2AU(R_sun));
+    rootObject = new sphere(null,250*km2AU(R_sun));
     objects.push(rootObject,2);
     rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
@@ -296,8 +302,7 @@ function initWorldObjects()
 }
 
 function initObject(parent,radius,distance,textureid,orbitParam,revol){
-    //var newObject = new sphere(parent,normalizeSize(radius));
-    var newObject = new square(parent);
+    var newObject = new sphere(parent,normalizeSize(radius));
     newObject.texture = textures[textureid];
     objects.push(newObject);
     newObject.translate([normalizeSize(AU2km(distance)),0,1]);
