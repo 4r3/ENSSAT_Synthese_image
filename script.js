@@ -62,7 +62,7 @@ D_venus = 0.723332;
 //orbit speed in rad/day
 
 O_earth = 2*Math.PI/365;
-O_venus = 2*Math.PI/224.7;
+O_venus = -2*Math.PI/224.7;
 O_moon = 2*Math.PI/27.32;
 
 //revol speed in rad/day
@@ -243,7 +243,7 @@ function degToRad(degrees)
 }
 
 
-function pol2Cart(longi, lat,R, resLongi, resLat)
+function pol2Cart(longi, lat,R)
 {
     return [
         R*Math.cos(degToRad(lat))*Math.sin(degToRad(longi)),
@@ -269,7 +269,7 @@ function drawScene()
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+    mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
     mat4.identity(mvMatrix);
 
     mat4.rotate(mvMatrix, -camHeight, [1, 0, 0]);
@@ -283,7 +283,7 @@ function drawScene()
 function initWorldObjects()
 {
 
-    rootObject = new sphere(null,250*km2AU(R_sun));
+    rootObject = new square(null);//new sphere(null,250*km2AU(R_sun));
     objects.push(rootObject,2);
     rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
@@ -296,7 +296,8 @@ function initWorldObjects()
 }
 
 function initObject(parent,radius,distance,textureid,orbitParam,revol){
-    var newObject = new sphere(parent,normalizeSize(radius));
+    //var newObject = new sphere(parent,normalizeSize(radius));
+    var newObject = new square(parent);
     newObject.texture = textures[textureid];
     objects.push(newObject);
     newObject.translate([normalizeSize(AU2km(distance)),0,1]);

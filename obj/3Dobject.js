@@ -57,7 +57,7 @@ worldObject.prototype.draw = function()
 			//gl.activeTexture(this.texture.getbind()); //TODO find how to use
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
-			gl.uniform1i(shaderProgram.samplerUniform, this.texture.bindNumber);
+			gl.uniform1i(shaderProgram.samplerUniform, 0);// this.texture.bindNumber);
 		}
 
 		mvPushMatrix();
@@ -91,7 +91,7 @@ worldObject.prototype.draw = function()
 
 			var lightingDirection = [
 				parseFloat(0),
-				parseFloat(1),
+				parseFloat(10),
 				parseFloat(0)
 			];//TODO create var for directional light direction
 
@@ -102,9 +102,9 @@ worldObject.prototype.draw = function()
 
 			gl.uniform3f(
 				shaderProgram.directionalColorUniform,
-				parseFloat(50),
-				parseFloat(50),
-				parseFloat(50)
+				parseFloat(5),
+				parseFloat(5),
+				parseFloat(5)
 			);//TODO create vars for directional light
 		}
 

@@ -7,7 +7,7 @@
 <script type="text/javascript" src="obj/3Dobject.js"></script>
 <script type="text/javascript" src="obj/sphere.js"></script>
 <script type="text/javascript" src="obj/triangle.js"></script>
-<script type="text/javascript" src="obj/square.js"></script>
+<script type="text/javascript" src="obj/cube.js"></script>
 <script type="text/javascript" src="obj/grassBall.js"></script>
 <script type="text/javascript" src="script.js"></script>
 
@@ -50,15 +50,14 @@
     void main(void)
 	{
         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-		vTextureCoord = aTextureCoord;
-
-		if (!uUseLighting) {
-		  vLightWeighting = vec3(1.0, 1.0, 1.0);
-		} else {
-		  vec3 transformedNormal = uNMatrix * aVertexNormal;
-		  float directionalLightWeighting = max(dot(transformedNormal, uLightingDirection), 0.0);
-		  vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
-		}
+        vTextureCoord = aTextureCoord;
+        if (!uUseLighting) {
+            vLightWeighting = vec3(1.0, 1.0, 1.0);
+        } else {
+            vec3 transformedNormal = uNMatrix * aVertexNormal;
+            float directionalLightWeighting = max(dot(transformedNormal, uLightingDirection), 0.0);
+            vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+        }
     }
 </script>
 
