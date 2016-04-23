@@ -39,6 +39,7 @@ var camHeight = 0;
 //world
 var objects = [];
 var rootObject;
+var skybox;
 
 //geometry
 var pasLat = 3;
@@ -48,6 +49,7 @@ var phiMax = 90;
 
 
 //radius in km
+R_skybox = 10000000000000;
 R_sun = 696342;
 R_earth = 6378;
 R_moon = 1737;
@@ -200,6 +202,7 @@ function initTextures()
     initTexture(1,"./img/earth.jpg");
     initTexture(2,"./img/moon.gif");
     initTexture(3,"./img/venus.jpg");
+    initTexture(4,"./img/skybox.jpg");
 
 }
 
@@ -262,6 +265,10 @@ function drawScene()
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
     mat4.identity(mvMatrix);
 
+    gl.disable(gl.DEPTH_TEST);
+    skybox.draw();
+    gl.enable(gl.DEPTH_TEST);
+
     mat4.rotate(mvMatrix, -camHeight, [1, 0, 0]);
 
     mat4.translate(mvMatrix, [camX, 0.0, camZ]);
@@ -272,6 +279,9 @@ function drawScene()
 
 function initWorldObjects()
 {
+    skybox = new sphere(null,1);
+    skybox.texture = textures[4];
+
 
     rootObject = new sphere(null,250*km2AU(R_sun));
     objects.push(rootObject,2);
