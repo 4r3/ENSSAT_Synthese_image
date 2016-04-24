@@ -44,7 +44,7 @@ var rootObject;
 var pasLat = 3;
 var pasLong = 6;
 var tetaMax = 360;
-var phiMax = 90;
+var phiMax = 90; //latitude max
 
 
 //radius in km
@@ -200,6 +200,7 @@ function initTextures()
     initTexture(1,"./img/earth.jpg");
     initTexture(2,"./img/moon.gif");
     initTexture(3,"./img/venus.jpg");
+    initTexture(4,"./img/ring.jpg");
 
 }
 
@@ -280,13 +281,25 @@ function initWorldObjects()
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
     initObject(earth,R_moon,D_moon,2,O_moon,Re_moon);
-    initObject(rootObject,R_venus,D_venus,3,O_venus,Re_venus);
+    var venus = initObject(rootObject,R_venus,D_venus,3,O_venus,Re_venus);
+    initRing(venus,R_venus,10*R_moon,4,O_venus,Re_venus,1.5*R_venus,2*R_venus);
 
     return rootObject;
 }
 
 function initObject(parent,radius,distance,textureid,orbitParam,revol){
     var newObject = new sphere(parent,normalizeSize(radius));
+    newObject.texture = textures[textureid];
+    objects.push(newObject);
+    newObject.translate([normalizeSize(AU2km(distance)),0,1]);
+    newObject.orbitParam = orbitParam;
+    newObject.revol = revol;
+
+    return newObject;
+}
+
+function initRing(parent,distance,textureid,orbitParam,revol,Rmin, Rmax){
+    var newObject = new ring(parent,normalizeSize(Rmin),normalizeSize(Rmax));
     newObject.texture = textures[textureid];
     objects.push(newObject);
     newObject.translate([normalizeSize(AU2km(distance)),0,1]);
