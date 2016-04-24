@@ -110,11 +110,12 @@ worldObject.prototype.draw = function()
 				0.2
 			);//TODO create vars for ambient light
 
+
 			gl.uniform3f(
 				shaderProgram.pointLightingLocationUniform,
-				camX,
-				camY,
-				camZ
+				userCameraMatrix[12],
+				userCameraMatrix[13],
+				userCameraMatrix[14]
 			);
 
 			gl.uniform3f(

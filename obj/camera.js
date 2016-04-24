@@ -3,15 +3,15 @@ function camera(parent)
 {
 	this.base = worldObject;
 	this.base(parent);
-	this.x = 0;
-	this.y = 0;
-	this.z = 0;
+	this.xyz = mat4.create();
+
 	this.oldestParent = null;
 }
 
 camera.prototype.draw = function()
 {
-	mat4.multiply(mvMatrix, this.trans);
+	//mat4.multiply(mvMatrix, this.trans);
+	
 
 	//setMatrixUniforms();
 

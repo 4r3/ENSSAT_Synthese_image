@@ -9,6 +9,8 @@ ring.prototype= new worldObject;
 		this.vertexPositionBuffer = buffers[0];
 		this.vertexTextureCoordBuffer = buffers[1];
 		this.vertexIndexBuffer = buffers[2];
+
+		//TODO add normal calculation
 	}
 
 	ring.prototype.initBuffers = function(Rmn,Rmx)

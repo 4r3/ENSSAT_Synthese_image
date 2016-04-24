@@ -17,10 +17,9 @@ var drawStyle;
 
 var userRotationMatrix = mat4.create();
 mat4.identity(userRotationMatrix);
+var userCameraMatrix = mat4.create();
 
-var rTri = 0;
-var rSquare = 0;
-var rSphere = 0;
+var userCameraMatrix = mat4.create();
 
 var lastTime = 0;
 var mouseDown = false;
@@ -107,15 +106,19 @@ function drawScene()
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
+    mat4.perspective(60, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
     mat4.identity(mvMatrix);
 
-    //skybox.draw();
+    mvPushMatrix();
+    mat4.multiply(mvMatrix,userRotationMatrix);
+    skybox.draw();
+    mvPopMatrix();
 
-    //mat4.rotate(mvMatrix, Math.PI/2, [1, 0, 0]);
+    mat4.identity(userCameraMatrix);
+    mat4.multiply(userCameraMatrix,userRotationMatrix);
+    mat4.translate(userCameraMatrix,[camX,camX,camZ]);
 
-    mat4.translate(mvMatrix, [camX, camY, camZ]);
-    //mat4.translate(mvMatrix, [0, 0, 0]);
+    mat4.multiply(mvMatrix,userCameraMatrix);
 
     setMatrixUniforms();
 
@@ -160,7 +163,6 @@ function animate()
     if (lastTime != 0)
     {
         elapsed = timeNow - lastTime;
-
     }
     rootObject.animate(elapsed);
     lastTime = timeNow;

@@ -97,5 +97,5 @@ function handleClick(checkMesh)
 
 function handleSlider1(sliderValue)
 {
-    //console.log(sliderValue);
+    Kt = sliderValue;
 }
