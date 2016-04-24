@@ -33,8 +33,8 @@ var toggleSquare= true;
 var toggleSphere= true;
 
 var camX = 0;
+var camY = 0;
 var camZ = 0;
-var camHeight = 0;
 
 //world
 var objects = [];
@@ -116,9 +116,9 @@ function drawScene()
 
     skybox.draw();
 
-    mat4.rotate(mvMatrix, -camHeight, [1, 0, 0]);
+    mat4.rotate(mvMatrix, 0, [1, 0, 0]);
 
-    mat4.translate(mvMatrix, [camX, 0.0, camZ]);
+    mat4.translate(mvMatrix, [camX, camY, camZ]);
     mat4.translate(mvMatrix, [0, 0.0, -40.0]);
 
     rootObject.draw();
@@ -126,19 +126,19 @@ function drawScene()
 
 function initWorldObjects()
 {
+
     skybox = new sphere(null,1);
     skybox.texture = textures[4];
     skybox.isSkybox = true;
     skybox.lightinEnabled = 0;
 
 
-    rootObject = new sphere(null,250*km2AU(R_sun));
+    rootObject = new sphere(null,250*km2AU(R_sun),true);
     objects.push(rootObject,2);
     rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
     rootObject.alpha = 0.8;
     rootObject.blending = 0;
-    rootObject.lightEmitter = 1;
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
     initObject(earth,R_moon,D_moon,2,O_moon,Re_moon);

@@ -58,10 +58,10 @@ function handleKeyDown(event)
             camZ--;
             break;
         case 33: //pageUp
-            camHeight+=degToRad(1);
+            camY++;
             break;
         case 34: //pageDown
-            camHeight-=degToRad(1);
+            camY--;
             break;
         case 116:
             window.location.reload();

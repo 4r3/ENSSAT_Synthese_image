@@ -74,7 +74,6 @@ worldObject.prototype.draw = function()
 		mvPushMatrix();
 		mat4.multiply(mvMatrix, this.rotation); // used for the revolution of the object, cancelled after draw
 
-
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
 		gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
@@ -112,7 +111,7 @@ worldObject.prototype.draw = function()
 			gl.uniform3f(
 				shaderProgram.pointLightingLocationUniform,
 				0+camX,
-				0,
+				0+camY,
 				-40+camZ
 			);
 
