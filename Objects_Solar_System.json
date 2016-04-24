@@ -1,0 +1,38 @@
+{
+  "Sun": {
+    "Radius":"696342",
+    "O_Distance": "",
+    "O_Speed": "",
+    "Axial_tilt":"",
+    "Rot_Speed":"2*Math.PI/29",
+    "Root":"",
+    "light_src":true
+  },
+  "Earth": {
+    "Radius":"6378",
+    "O_Distance": "1",
+    "O_Speed": "2*Math.PI/365",
+    "Axial_tilt": "",
+    "Rot_Speed": "2*Math.PI",
+    "Root":"Sun",
+    "light_src": false
+  },
+  "Venus": {
+    "Radius":"6051",
+    "O_Distance": "0.723332",
+    "O_Speed": "2*Math.PI/-243",
+    "Axial_tilt": "",
+    "Rot_Speed": "2*Math.PI/-243",
+    "Root": "Sun",
+    "light_src": false
+  },
+  "Moon": {
+    "Radius":"1737",
+    "O_Distance": "0.00257",
+    "O_Speed": "2*Math.PI/27.32",
+    "Axial_tilt": "",
+    "Rot_Speed": "2*Math.PI/27.32",
+    "Root": "Earth",
+    "light_src": false
+  }
+}
