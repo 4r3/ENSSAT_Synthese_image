@@ -114,9 +114,7 @@ function drawScene()
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
     mat4.identity(mvMatrix);
 
-    gl.disable(gl.DEPTH_TEST);
-    //skybox.draw();  //TODO find how to re-activate
-    gl.enable(gl.DEPTH_TEST);
+    skybox.draw();  //TODO find how to re-activate
 
     mat4.rotate(mvMatrix, -camHeight, [1, 0, 0]);
 
@@ -130,13 +128,14 @@ function initWorldObjects()
 {
     skybox = new sphere(null,1);
     skybox.texture = textures[4];
+    skybox.isSkybox = true;
 
 
     rootObject = new sphere(null,250*km2AU(R_sun));
     objects.push(rootObject,2);
     rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
-    rootObject.alpha = 0.5;
+    rootObject.alpha = 0.8;
     rootObject.blending=1;
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);

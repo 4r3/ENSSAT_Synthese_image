@@ -31,11 +31,11 @@
     void main(void)
 	{
 		mediump vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-		/*if(!uUseBlending){
+		if(!uUseBlending){
 			gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
-		} else {*/
+		} else {
 			gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a * uAlpha);
-		//}
+		}
     }
 </script>
 

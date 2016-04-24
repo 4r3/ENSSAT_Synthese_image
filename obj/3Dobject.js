@@ -15,6 +15,8 @@ function worldObject(parent)
 	this.texture = null;
 	this.blending = 0;
 	this.alpha = 1;
+	this.isSkybox = false;
+
 
 	this.orbitParam = 0;
 	this.revol = 0;
@@ -80,10 +82,10 @@ worldObject.prototype.draw = function()
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
 		gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-		
-		
-		gl.uniform1f(shaderProgram.useBlending, 1);
-		if (this.blending) {
+		gl.uniform1f(shaderProgram.useBlending, this.blending);
+		if(this.isSkybox) {
+			gl.disable(gl.DEPTH_TEST);
+		} else if (this.blending) {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 			gl.enable(gl.BLEND);
 			gl.disable(gl.DEPTH_TEST);
@@ -135,7 +137,9 @@ worldObject.prototype.draw = function()
 			gl.drawElements(drawStyle, this.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
 		}
 		mvPopMatrix();
-
+		if(this.isSkybox){
+			gl.enable(gl.DEPTH_TEST);
+		}
 		//draws children
 		for(var i =0; i< this.children.length; i++)
 		{
