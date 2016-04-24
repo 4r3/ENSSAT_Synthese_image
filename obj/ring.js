@@ -22,14 +22,15 @@ ring.prototype= new worldObject;
 		var nbVertice = 0;
 		var sphereVertexIndices = [];
 		var nbTriangles = 0;
+		var pasLong = 3;
 		var resLongi = tetaMax/pasLong+1;
-		var pasR=(Rmx-Rmn)/1;
+		var pasR=(Rmx-Rmn)/2;
 
 		for(var R = Rmn; R<=Rmx; R+=pasR) {
 			for (var longi = 0; longi <= tetaMax; longi += pasLong) {
-				vertices = vertices.concat(pol2Cart(longi, 0, Rmn)); //A
+				vertices = vertices.concat(pol2Cart(longi, 0, R)); //A
 
-				textureCoords = textureCoords.concat([longi / tetaMax, (R - Rmn) / (Rmx - Rmn)]);
+				textureCoords = textureCoords.concat([(Rmx-R) / (Rmx - Rmn),10*longi / tetaMax]);
 				if (longi != tetaMax) {
 					if (R < Rmx) {
 						sphereVertexIndices = sphereVertexIndices.concat([
@@ -48,6 +49,8 @@ ring.prototype= new worldObject;
 				nbVertice += 1;
 			}
 		}
+
+		console.log(nbTriangles);
 
 
 		vertexPositionBuffer = gl.createBuffer();
