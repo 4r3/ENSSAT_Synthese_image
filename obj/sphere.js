@@ -1,7 +1,7 @@
 sphere.prototype = new worldObject;
 	function sphere(parent,R,ligthEmitter)
 	{
-		a = typeof a !== 'undefined' ? a : false;
+		ligthEmitter = typeof ligthEmitter !== 'undefined' ? ligthEmitter : false;
 		this.base = worldObject;
 		this.base(parent);
 		var buffers = this.initBuffers(R,ligthEmitter);

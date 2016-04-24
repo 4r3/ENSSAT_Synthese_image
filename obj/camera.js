@@ -4,28 +4,42 @@ function camera(parent)
 	this.base = worldObject;
 	this.base(parent);
 	this.x = 0;
+	this.y = 0;
 	this.z = 0;
-	this.height = 0;
+	this.oldestParent = null;
 }
 
 camera.prototype.draw = function()
 {
 	mat4.multiply(mvMatrix, this.trans);
 
-	setMatrixUniforms();
+	//setMatrixUniforms();
 
-	//draws children
-	for(var i =0; i< this.children.length; i++)
-	{
-		this.children[i].draw();
+	if(parent==null){
+		for(var i =0; i< this.children.length; i++)
+		{
+			this.children[i].draw();
+		}
+	}else{
+		this.oldestParent.draw();
 	}
 }
 
 camera.prototype.animate = function(elapsedTime)
 {
-	//animate children
-	for(var i =0; i< this.children.length; i++)
-	{
-		this.children[i].animate();
-	}
+	this.getTransMatrix();
+	mat4.invert(this.trans);
 }
+
+camera.prototype.getTransMatrix = function(parent){
+	if(parent.parent=null){
+		this.oldestParent = parent;
+		mat4.identity(this.trans)
+	}else{
+		this.getTransMatrix(parent.parent);
+	}
+	mat4.multiply(this.trans, parent.orbitmat);
+	mat4.multiply(this.trans, parent.trans);
+}
+
+

@@ -99,10 +99,6 @@ function initGL(canvas)
 
 
 
-//TEXTURES
-
-
-
 //INITGL
 
 
@@ -114,12 +110,14 @@ function drawScene()
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
     mat4.identity(mvMatrix);
 
-    skybox.draw();
+    //skybox.draw();
 
-    mat4.rotate(mvMatrix, 0, [1, 0, 0]);
+    //mat4.rotate(mvMatrix, Math.PI/2, [1, 0, 0]);
 
     mat4.translate(mvMatrix, [camX, camY, camZ]);
-    mat4.translate(mvMatrix, [0, 0.0, -40.0]);
+    //mat4.translate(mvMatrix, [0, 0, 0]);
+
+    setMatrixUniforms();
 
     rootObject.draw();
 }
@@ -137,8 +135,6 @@ function initWorldObjects()
     objects.push(rootObject,2);
     rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
-    rootObject.alpha = 0.8;
-    rootObject.blending = 0;
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
     initObject(earth,R_moon,D_moon,2,O_moon,Re_moon);
@@ -150,7 +146,6 @@ function initWorldObjects()
 function initObject(parent,radius,distance,textureid,orbitParam,revol){
     var newObject = new sphere(parent,normalizeSize(radius));
     newObject.texture = textures[textureid];
-    objects.push(newObject);
     newObject.translate([normalizeSize(AU2km(distance)),0,1]);
     newObject.orbitParam = orbitParam;
     newObject.revol = revol;
