@@ -13,6 +13,8 @@ function worldObject(parent)
 	this.vertexNormalsBuffer = null;
 	this.toggled = true;
 	this.texture = null;
+
+	this.lightinEnabled = 1;
 	this.blending = 0;
 	this.alpha = 1;
 	this.isSkybox = false;
@@ -92,13 +94,14 @@ worldObject.prototype.draw = function()
 			gl.uniform1f(shaderProgram.alphaUniform, this.alpha);
 		} else {
 			gl.disable(gl.BLEND);
-			gl.enable(gl.DEPTH_TEST); //TODO find why it make the scene bugging
+			gl.enable(gl.DEPTH_TEST);
+			gl.enable(gl.DEPTH_TEST);
 		}
 
-		var lighting = 1;
-		gl.uniform1i(shaderProgram.useLightingUniform, lighting);
 
-		if (lighting) {
+		gl.uniform1i(shaderProgram.useLightingUniform, this.lightinEnabled);
+
+		if (this.lightinEnabled) {
 			gl.uniform3f(
 				shaderProgram.ambientColorUniform,
 				0.5,
@@ -106,22 +109,18 @@ worldObject.prototype.draw = function()
 				0.5
 			);//TODO create vars for ambient light
 
-			var lightingDirection = [
-				parseFloat(-1),
-				parseFloat(-1),
-				parseFloat(-1)
-			];//TODO create var for directional light direction
-
-			var adjustedLD = vec3.create();
-			vec3.normalize(lightingDirection, adjustedLD);
-			vec3.scale(adjustedLD, -1);
-			gl.uniform3fv(shaderProgram.lightingDirectionUniform, adjustedLD);
+			gl.uniform3f(
+				shaderProgram.pointLightingLocationUniform,
+				0+camX,
+				0,
+				-40+camZ
+			);
 
 			gl.uniform3f(
-				shaderProgram.directionalColorUniform,
-				parseFloat(5),
-				parseFloat(5),
-				parseFloat(5)
+				shaderProgram.pointLightingColorUniform,
+				5,
+				5,
+				5
 			);//TODO create vars for directional light
 		}
 

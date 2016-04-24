@@ -114,7 +114,7 @@ function drawScene()
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
     mat4.identity(mvMatrix);
 
-    skybox.draw();  //TODO find how to re-activate
+    skybox.draw();
 
     mat4.rotate(mvMatrix, -camHeight, [1, 0, 0]);
 
@@ -129,6 +129,7 @@ function initWorldObjects()
     skybox = new sphere(null,1);
     skybox.texture = textures[4];
     skybox.isSkybox = true;
+    skybox.lightinEnabled = 0;
 
 
     rootObject = new sphere(null,250*km2AU(R_sun));
@@ -136,7 +137,8 @@ function initWorldObjects()
     rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
     rootObject.alpha = 0.8;
-    rootObject.blending=1;
+    rootObject.blending = 0;
+    rootObject.lightEmitter = 1;
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
     initObject(earth,R_moon,D_moon,2,O_moon,Re_moon);
