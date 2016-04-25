@@ -1,4 +1,4 @@
-function square(parent)
+function cube(parent)
 	{
 		this.base = worldObject;
 		this.base (parent);
@@ -9,9 +9,9 @@ function square(parent)
 		this.vertexNormalsBuffer = buffers[3];
 	}
 
-	square.prototype= new worldObject;
+	cube.prototype= new worldObject;
 
-	square.prototype.initBuffers = function()
+	cube.prototype.initBuffers = function()
 	{
 		cubeVertexPositionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);

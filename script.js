@@ -21,6 +21,8 @@ var userCameraMatrix = mat4.create();
 
 var userCameraMatrix = mat4.create();
 
+var camera = new camera(null);
+
 var lastTime = 0;
 var mouseDown = false;
 var lastMouseX = null;
@@ -37,8 +39,7 @@ var camZ = 0;
 
 //world
 var objects = [];
-var rootObject;
-var skybox;
+var rootObject;;
 
 //geometry
 var pasLat = 3;
@@ -109,16 +110,7 @@ function drawScene()
     mat4.perspective(60, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
     mat4.identity(mvMatrix);
 
-    mvPushMatrix();
-    mat4.multiply(mvMatrix,userRotationMatrix);
-    skybox.draw();
-    mvPopMatrix();
-
-    mat4.identity(userCameraMatrix);
-    mat4.multiply(userCameraMatrix,userRotationMatrix);
-    mat4.translate(userCameraMatrix,[camX,camX,camZ]);
-
-    mat4.multiply(mvMatrix,userCameraMatrix);
+    camera.draw();
 
     setMatrixUniforms();
 
@@ -128,10 +120,12 @@ function drawScene()
 function initWorldObjects()
 {
 
-    skybox = new sphere(null,1);
+    var skybox = new sphere(null,4);
     skybox.texture = textures[4];
     skybox.isSkybox = true;
     skybox.lightinEnabled = 0;
+
+    camera.skybox = skybox;
 
 
     rootObject = new sphere(null,250*km2AU(R_sun),true);
