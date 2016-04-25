@@ -120,9 +120,9 @@ worldObject.prototype.draw = function()
 
 			gl.uniform3f(
 				shaderProgram.pointLightingColorUniform,
-				8,
-				8,
-				8
+				1,
+				1,
+				1
 			);//TODO create vars for directional light
 		}
 

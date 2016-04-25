@@ -130,7 +130,7 @@ function initWorldObjects()
 
     rootObject = new sphere(null,250*km2AU(R_sun),true);
     objects.push(rootObject,2);
-    rootObject.texture = textures[0];
+    rootObject.texture = textures[6];
     rootObject.revol = Re_sun;
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
@@ -166,6 +166,7 @@ function tick() {
     requestAnimFrame(tick);
     drawScene();
     animate();
+    updateTexture(6);
 }
 
 function webGLStart() {
