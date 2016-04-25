@@ -17,10 +17,11 @@ var drawStyle;
 
 var userRotationMatrix = mat4.create();
 mat4.identity(userRotationMatrix);
+var userCameraMatrix = mat4.create();
 
-var rTri = 0;
-var rSquare = 0;
-var rSphere = 0;
+var userCameraMatrix = mat4.create();
+
+var camera = new camera(null);
 
 var lastTime = 0;
 var mouseDown = false;
@@ -38,8 +39,7 @@ var camZ = 0;
 
 //world
 var objects = [];
-var rootObject;
-var skybox;
+var rootObject;;
 
 //geometry
 var pasLat = 3;
@@ -99,10 +99,6 @@ function initGL(canvas)
 
 
 
-//TEXTURES
-
-
-
 //INITGL
 
 
@@ -111,15 +107,12 @@ function drawScene()
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
+    mat4.perspective(60, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
     mat4.identity(mvMatrix);
 
-    skybox.draw();
+    camera.draw();
 
-    mat4.rotate(mvMatrix, 0, [1, 0, 0]);
-
-    mat4.translate(mvMatrix, [camX, camY, camZ]);
-    mat4.translate(mvMatrix, [0, 0.0, -40.0]);
+    setMatrixUniforms();
 
     rootObject.draw();
 }
@@ -127,18 +120,18 @@ function drawScene()
 function initWorldObjects()
 {
 
-    skybox = new sphere(null,1);
+    var skybox = new sphere(null,4);
     skybox.texture = textures[4];
     skybox.isSkybox = true;
     skybox.lightinEnabled = 0;
+
+    camera.skybox = skybox;
 
 
     rootObject = new sphere(null,250*km2AU(R_sun),true);
     objects.push(rootObject,2);
     rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
-    rootObject.alpha = 0.8;
-    rootObject.blending = 0;
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
     initObject(earth,R_moon,D_moon,2,O_moon,Re_moon);
@@ -150,7 +143,6 @@ function initWorldObjects()
 function initObject(parent,radius,distance,textureid,orbitParam,revol){
     var newObject = new sphere(parent,normalizeSize(radius));
     newObject.texture = textures[textureid];
-    objects.push(newObject);
     newObject.translate([normalizeSize(AU2km(distance)),0,1]);
     newObject.orbitParam = orbitParam;
     newObject.revol = revol;
@@ -165,7 +157,6 @@ function animate()
     if (lastTime != 0)
     {
         elapsed = timeNow - lastTime;
-
     }
     rootObject.animate(elapsed);
     lastTime = timeNow;

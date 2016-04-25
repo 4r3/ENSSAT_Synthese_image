@@ -2,6 +2,7 @@
 //INITWORLD
 function worldObject(parent)
 {
+	this.parent = parent;
 	this.trans = mat4.create();
 	this.rotation = mat4.create();
 	this.orbitmat = mat4.create();
@@ -80,9 +81,6 @@ worldObject.prototype.draw = function()
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
 		gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.vertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
-		gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
 		gl.uniform1f(shaderProgram.useBlending, this.blending);
 		if(this.isSkybox) {
 			gl.disable(gl.DEPTH_TEST);
@@ -101,25 +99,30 @@ worldObject.prototype.draw = function()
 		gl.uniform1i(shaderProgram.useLightingUniform, this.lightinEnabled);
 
 		if (this.lightinEnabled) {
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
+			gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
 			gl.uniform3f(
 				shaderProgram.ambientColorUniform,
-				0.5,
-				0.5,
-				0.5
+				0.2,
+				0.2,
+				0.2
 			);//TODO create vars for ambient light
+
 
 			gl.uniform3f(
 				shaderProgram.pointLightingLocationUniform,
-				0+camX,
-				0+camY,
-				-40+camZ
+				userCameraMatrix[12],
+				userCameraMatrix[13],
+				userCameraMatrix[14]
 			);
 
 			gl.uniform3f(
 				shaderProgram.pointLightingColorUniform,
-				5,
-				5,
-				5
+				8,
+				8,
+				8
 			);//TODO create vars for directional light
 		}
 
