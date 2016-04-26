@@ -10,7 +10,7 @@ function initTextures()
     initTexture(2,"./img/moon.gif");
     initTexture(3,"./img/venus.jpg");
     initTexture(4,"./img/stars.jpg");
-    initTexture(5,"./img/ring.jpg");
+    initTexture(5,"./img/orbitLine.jpg");
     initVideo();
     initSpecialTextures(6);
 

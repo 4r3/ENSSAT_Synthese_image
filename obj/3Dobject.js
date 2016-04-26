@@ -20,6 +20,7 @@ function worldObject(parent)
 	this.blending = 0;
 	this.alpha = 1;
 	this.isSkybox = false;
+	this.isOrbitLine = false;
 
 
 	this.orbitParam = 0;
@@ -131,7 +132,12 @@ worldObject.prototype.draw = function()
 
 		if(this.vertexIndexBuffer == null)
 		{
-			gl.drawArrays(drawStyle, 0, this.vertexPositionBuffer.numItems);
+			if(this.isOrbitLine){
+				gl.drawArrays(gl.LINE_LOOP, 0, this.vertexPositionBuffer.numItems);
+			}else{
+				gl.drawArrays(drawStyle, 0, this.vertexPositionBuffer.numItems);
+			}
+
 		}
 		else
 		{

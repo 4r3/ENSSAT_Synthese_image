@@ -145,6 +145,9 @@ function initObject(parent,radius,distance,textureid,orbitParam,revol){
     newObject.orbitParam = orbitParam;
     newObject.revol = revol;
 
+    var OrbitObject = new orbitLine(parent,normalizeSize(AU2km(distance)));
+    OrbitObject.texture = textures[textureid];
+
     return newObject;
 }
 

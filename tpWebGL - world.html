@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="obj/grassBall.js"></script>
 	<script type="text/javascript" src="obj/camera.js"></script>
 	<script type="text/javascript" src="obj/ring.js"></script>
+	<script type="text/javascript" src="obj/orbitLine.js"></script>
 
 	<script type="text/javascript" src="handlers.js"></script>
 	<script type="text/javascript" src="utils.js"></script>
@@ -91,13 +92,13 @@
 	<table border="0" width="100%">
 
 		<tr><td style="width:500px">
-			<canvas id="lesson03-canvas" style="border: none;" width="500" height="500"></canvas>
+			<canvas id="lesson03-canvas" style="border: none;" width="700" height="500"></canvas>
 			</td>
 			<td>
 			simulation speed :
 			<input type="number" min="0" max="100" value="1" step="1" oninput="handleSlider1(this.value)"/>
 			<br />
-			<input type="button" onclick="surprise()" value="Clic Meeeh!"/>
+			<input type="button" onclick="//surprise()" value="Clic Meeeh!"/>
 
 			<br />
 			Draw mode <select id="drawCombo" onChange="drawCombo(this)">

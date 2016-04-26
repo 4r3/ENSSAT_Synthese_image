@@ -4,7 +4,8 @@ function camera(parent)
 	this.base = worldObject;
 	this.base(parent);
 	this.skybox = null;
-	this.translate([0,0,-15]);
+	this.translate([0,-15,0]);
+	this.rotate(Math.PI/2,[1,0,0]);
 	
 
 	//this.oldestParent = null;
