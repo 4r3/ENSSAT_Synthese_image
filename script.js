@@ -120,12 +120,10 @@ function drawScene()
 function initWorldObjects()
 {
 
-    var skybox = new cube(null,1);
-    skybox.texture = textures[4];
-    skybox.isSkybox = true;
-    skybox.lightinEnabled = 0;
+    var myskybox = new skybox(null);
+    myskybox.texture = textures[4];
 
-    myCamera.skybox = skybox;
+    myCamera.skybox = myskybox;
 
     rootObject = new sphere(null,250*km2AU(R_sun),true);
     rootObject.texture = textures[0];
