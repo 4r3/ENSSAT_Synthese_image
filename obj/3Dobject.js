@@ -15,6 +15,7 @@ function worldObject(parent)
 	this.toggled = true;
 	this.texture = null;
 
+	this.isLigthSource =true;
 	this.lightinEnabled = 1;
 	this.blending = 0;
 	this.alpha = 1;
@@ -71,7 +72,6 @@ worldObject.prototype.draw = function()
 		mat4.multiply(mvMatrix, this.orbitmat); //rotate on the rootObject position for orbit simulation
 		mat4.multiply(mvMatrix, this.trans);	//place the object at the right distance
 
-
 		mvPushMatrix();
 		mat4.multiply(mvMatrix, this.rotation); // used for the revolution of the object, cancelled after draw
 
@@ -97,11 +97,12 @@ worldObject.prototype.draw = function()
 
 
 		gl.uniform1i(shaderProgram.useLightingUniform, this.lightinEnabled);
-
-		if (this.lightinEnabled) {
-
+		if(this.lightinEnabled) {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
 			gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
+		}
+
+		if (this.isLigthSource) {
 
 			gl.uniform3f(
 				shaderProgram.ambientColorUniform,
@@ -113,9 +114,9 @@ worldObject.prototype.draw = function()
 
 			gl.uniform3f(
 				shaderProgram.pointLightingLocationUniform,
-				userCameraMatrix[12],
-				userCameraMatrix[13],
-				userCameraMatrix[14]
+				mvMatrix[12],
+				mvMatrix[13],
+				mvMatrix[14]
 			);
 
 			gl.uniform3f(

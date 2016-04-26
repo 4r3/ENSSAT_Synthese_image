@@ -96,9 +96,7 @@
 			<td>
 			<input type="range" min="0" max="100" value="100" step="1" oninput="handleSlider1(this.value)"/>
 			<br />
-			<input type="checkbox" name="mesh" value="triangle" onclick='handleClick(this)' checked=true/>Triangle<br />
-			<input type="checkbox" name="mesh" value="sphere" onclick='handleClick(this)' checked="true">Sphere<br />
-			<input type="checkbox" name="mesh" value="square" onclick='handleClick(this)' checked=1/>Square<br />
+			<input type="button" onclick="surprise()" value="Clic Meeeh!"/>
 
 			<br />
 			Draw mode <select id="drawCombo" onChange="drawCombo(this)">
@@ -114,7 +112,7 @@
 		</tr>
 
 </table>
-	<video id="video" src="vids/goat.mp4">
+	<video id="video">
 	</video>
     <br>
     <a href="http://learningwebgl.com/">&lt;&lt; Tutorial</a><br>

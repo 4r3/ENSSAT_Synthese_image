@@ -9,7 +9,7 @@ function initTextures()
     initTexture(1,"./img/earth.jpg");
     initTexture(2,"./img/moon.gif");
     initTexture(3,"./img/venus.jpg");
-    initTexture(4,"./img/skybox.jpg");
+    initTexture(4,"./img/stars.jpg");
     initTexture(5,"./img/ring.jpg");
     initVideo();
     initSpecialTextures(6);
@@ -17,22 +17,26 @@ function initTextures()
 }
 
 function initVideo() {
-    videoElement = document.getElementById("video");
-    videoElement.addEventListener("canplaythrough", startVideo, true);
-    videoElement.addEventListener("ended", videoDone, true);
+    video = document.getElementById("video");
+    video.addEventListener("canplaythrough", startVideo, true);
+    video.addEventListener("ended", videoDone, true);
+    video.src = "vids/goat.mp4";
+
+    video.isReady = false;
     video.preload = "auto";
-    //videoElement.src = "Firefox.ogv";
-    video.autoplay = true;
-    video.loop = true;
+
+    //video.autoplay = true;
+    //video.loop = true;
 }
 
 function startVideo() {
-    videoElement.play();
-    //intervalID = setInterval(drawScene, 15);
+    video.play();
+    video.isReady = true;
 }
 
 function videoDone() {
-    //clearInterval(intervalID);
+    myCamera.skybox.texture = textures[4];
+    video.isReady = false;
 }
 
 function initSpecialTextures(id){
@@ -72,6 +76,7 @@ function handleSpecialTexture(texture){
 function updateTexture(id) {
     gl.bindTexture(gl.TEXTURE_2D, textures[id]);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,
-        gl.UNSIGNED_BYTE, videoElement);
+    if (video.isReady) {
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, video);//todo find how to stop errors
+    }
 }

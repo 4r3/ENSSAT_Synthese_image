@@ -4,6 +4,7 @@ sphere.prototype = new worldObject;
 		ligthEmitter = typeof ligthEmitter !== 'undefined' ? ligthEmitter : false;
 		this.base = worldObject;
 		this.base(parent);
+		this.isLigthSource = ligthEmitter;
 		var buffers = this.initBuffers(R,ligthEmitter);
 		this.vertexPositionBuffer = buffers[0];
 		this.vertexTextureCoordBuffer = buffers[1];

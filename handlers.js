@@ -26,6 +26,9 @@ function handleMouseMove(event)
     var deltaY = newY - lastMouseY;
     mat4.rotate(newRotationMatrix, degToRad(deltaY / 7), [1, 0, 0]);
 
+    myCamera.rotate(degToRad(deltaY / 7), [1, 0, 0]);
+    myCamera.rotate(degToRad(deltaX / 7), [0, 1, 0]);
+
     mat4.multiply(newRotationMatrix, userRotationMatrix, userRotationMatrix);
 
     lastMouseX = newX;
@@ -49,33 +52,23 @@ function handleKeyDown(event)
     switch(event.keyCode)
     {
         case 37: //left
-            mat4.translate(transmat,[1,0,0]);
-            camera.translate(transmat);
-            camX++;
+            myCamera.translate([1,0,0]);
             break;
         case 39: //right
-            camX--;
-            mat4.translate(transmat,[-1,0,0]);
-            camera.translate(transmat);
+            myCamera.translate([-1,0,0]);
             break;
         case 38: //down
-            camZ++;
-            mat4.translate(transmat,[0,0,1]);
-            camera.translate(transmat);
+            myCamera.translate([0,0,1]);
             break;
         case 40: //forward
-            camZ--;
-            mat4.translate(transmat,[0,0,-1]);
-            camera.translate(transmat);
+            myCamera.translate([0,0,-1]);
             break;
         case 33: //pageUp
-            mat4.translate(transmat,[0,1,0]);
-            camera.translate(transmat);
+            myCamera.translate([0,1,0]);
             camY++;
             break;
         case 34: //pageDown
-            mat4.translate(transmat,[0,-1,0]);
-            camera.translate(transmat);
+            myCamera.translate([0,-1,0]);
             camY--;
             break;
         case 116:
@@ -114,4 +107,9 @@ function handleClick(checkMesh)
 function handleSlider1(sliderValue)
 {
     Kt = sliderValue;
+}
+
+function surprise() {
+    myCamera.skybox.texture = textures[6];
+    video.play();
 }

@@ -17,11 +17,11 @@ var drawStyle;
 
 var userRotationMatrix = mat4.create();
 mat4.identity(userRotationMatrix);
-var userCameraMatrix = mat4.create();
 
 var userCameraMatrix = mat4.create();
 
-var camera = new camera(null);
+
+var myCamera = new camera(null);
 
 var lastTime = 0;
 var mouseDown = false;
@@ -38,8 +38,8 @@ var camY = 0;
 var camZ = 0;
 
 //world
-var objects = [];
-var rootObject;;
+var rootObject;
+var tempSkybox;
 
 //geometry
 var pasLat = 3;
@@ -110,7 +110,7 @@ function drawScene()
     mat4.perspective(60, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
     mat4.identity(mvMatrix);
 
-    camera.draw();
+    myCamera.draw();
 
     setMatrixUniforms();
 
@@ -120,17 +120,15 @@ function drawScene()
 function initWorldObjects()
 {
 
-    var skybox = new sphere(null,4);
+    var skybox = new cube(null,1);
     skybox.texture = textures[4];
     skybox.isSkybox = true;
     skybox.lightinEnabled = 0;
 
-    camera.skybox = skybox;
-
+    myCamera.skybox = skybox;
 
     rootObject = new sphere(null,250*km2AU(R_sun),true);
-    objects.push(rootObject,2);
-    rootObject.texture = textures[6];
+    rootObject.texture = textures[0];
     rootObject.revol = Re_sun;
 
     var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
@@ -166,7 +164,9 @@ function tick() {
     requestAnimFrame(tick);
     drawScene();
     animate();
+
     updateTexture(6);
+
 }
 
 function webGLStart() {
