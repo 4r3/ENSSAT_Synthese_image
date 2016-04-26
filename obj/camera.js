@@ -15,15 +15,12 @@ camera.prototype.draw = function()
 
 	if(this.skybox!=null){
 		mvPushMatrix();
-		mat4.multiply(mvMatrix,userRotationMatrix);
+		mat4.multiply(mvMatrix,this.rotation);
 		this.skybox.draw();
 		mvPopMatrix();
 	}
 
-	mat4.identity(userCameraMatrix);
-	mat4.multiply(userCameraMatrix,userRotationMatrix);
-	mat4.multiply(userCameraMatrix,this.trans);
-	mat4.multiply(mvMatrix,userCameraMatrix);
+	mat4.multiply(mvMatrix,this.trans);
 	
 
 	//setMatrixUniforms();
@@ -55,24 +52,15 @@ camera.prototype.getTransMatrix = function(parent){
 	mat4.multiply(this.trans, parent.trans);
 }
 
-worldObject.prototype.translate = function(translation)
+camera.prototype.translate = function(translation)
 {
-	var newMatrix = mat4.create();
-	mat4.identity(newMatrix);
-	mat4.multiply(newMatrix,userRotationMatrix);
-	mat4.translate(newMatrix, translation);
-
-
-	//mat4.
-	//console.log(newMatrix);
-
-	//mat4.translate(this.trans,[newMatrix[12],newMatrix[13],newMatrix[14]]);
-
-	mat4.translate(this.trans,translation);
+	this.trans[12]+=translation[0];
+	this.trans[13]+=translation[1];
+	this.trans[14]+=translation[2];
 
 }
-/*
-worldObject.prototype.rotate = function(rotation, axis)
+
+camera.prototype.rotate = function(rotation, axis)
 {
 	var newMatrix = mat4.create();
 	mat4.identity(newMatrix);
@@ -80,4 +68,4 @@ worldObject.prototype.rotate = function(rotation, axis)
 	mat4.multiply(newMatrix,this.trans);
 
 	mat4.set(newMatrix,this.trans);
-}*/
+}

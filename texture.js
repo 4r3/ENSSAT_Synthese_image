@@ -30,7 +30,7 @@ function initVideo() {
 }
 
 function startVideo() {
-    video.play();
+    //video.play();
     video.isReady = true;
 }
 

@@ -29,7 +29,7 @@ function handleMouseMove(event)
     myCamera.rotate(degToRad(deltaY / 7), [1, 0, 0]);
     myCamera.rotate(degToRad(deltaX / 7), [0, 1, 0]);
 
-    mat4.multiply(newRotationMatrix, userRotationMatrix, userRotationMatrix);
+    mat4.multiply(newRotationMatrix, myCamera.rotation, myCamera.rotation);
 
     lastMouseX = newX;
     lastMouseY = newY;
