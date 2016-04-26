@@ -142,7 +142,12 @@ worldObject.prototype.draw = function()
 		else
 		{
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertexIndexBuffer);
-			gl.drawElements(drawStyle, this.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+			if(this.isOrbitLine){
+				gl.drawElements(gl.LINE_LOOP, this.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+			}else{
+				gl.drawElements(drawStyle, this.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+			}
+
 		}
 		mvPopMatrix();
 		if(this.isSkybox){

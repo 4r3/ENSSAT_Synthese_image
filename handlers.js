@@ -64,11 +64,11 @@ function handleKeyDown(event)
             myCamera.translate([0,0,-1]);
             break;
         case 33: //pageUp
-            myCamera.translate([0,1,0]);
+            myCamera.translate([0,-1,0]);
             camY++;
             break;
         case 34: //pageDown
-            myCamera.translate([0,-1,0]);
+            myCamera.translate([0,1,0]);
             camY--;
             break;
         case 116:

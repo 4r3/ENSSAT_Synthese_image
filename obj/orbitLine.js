@@ -4,11 +4,10 @@ orbitLine.prototype= new worldObject;
 		this.base = worldObject;
 		this.base (parent);
 		var buffers = this.initBuffers(R);
-		//this.vertexPositionBuffer = this.initVertexPositionBuffer();
-		//this.vertexTextureCoordBuffer = this.initTextureCoordPositionBuffer();
 		this.vertexPositionBuffer = buffers[0];
 		this.vertexTextureCoordBuffer = buffers[1];
-		this.vertexIndexBuffer = null;//buffers[2];
+
+		this.isOrbitLine = true;
 
 		this.lightinEnabled = false;
 	}
@@ -17,35 +16,18 @@ orbitLine.prototype= new worldObject;
 	{
 		vertexPositionBuffer = gl.createBuffer();
 		vertexTextureCoordBuffer = gl.createBuffer();
-		vertexIndexBuffer = gl.createBuffer();
 
 		vertices = [];
         textureCoords = [];
 		var nbVertice = 0;
-		var sphereVertexIndices = [];
-		var nbTriangles = 0;
 		var pasLong = 1;
-		var resLongi = tetaMax/pasLong+1;
 		for (var longi = 0; longi <= tetaMax; longi += pasLong) {
-			vertices = vertices.concat(pol2Cart(longi, 0, R)); //A
 
-			textureCoords = textureCoords.concat([0.5,0.5]);
-			/*if (longi != tetaMax) {
-				if (R < Rmx) {
-					sphereVertexIndices = sphereVertexIndices.concat([
-						nbVertice,
-						nbVertice + 1,
-						nbVertice + 1 + resLongi,
+			vertices = vertices.concat(pol2Cart(longi, 0, R));
+			textureCoords = textureCoords.concat([0.5, 0.5]);
 
-						nbVertice,
-						nbVertice + 1 + resLongi,
-						nbVertice + resLongi,
-					]);
+			nbVertice++;
 
-					nbTriangles += 2;
-				}
-			}*/
-			nbVertice += 1;
 		}
 
 
@@ -55,16 +37,10 @@ orbitLine.prototype= new worldObject;
         vertexPositionBuffer.itemSize = 3;
         vertexPositionBuffer.numItems = nbVertice;
 
-		vertexIndexBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer);
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(sphereVertexIndices), gl.STATIC_DRAW);
-		vertexIndexBuffer.itemSize = 1;
-		vertexIndexBuffer.numItems = nbTriangles*3;
-
 		vertexTextureCoordBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertexTextureCoordBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
 		vertexTextureCoordBuffer.itemSize = 2;
 		vertexTextureCoordBuffer.numItems = nbVertice;
-		return [vertexPositionBuffer, vertexTextureCoordBuffer, vertexIndexBuffer];
+		return [vertexPositionBuffer, vertexTextureCoordBuffer];
 	}

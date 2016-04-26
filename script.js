@@ -141,7 +141,7 @@ function initWorldObjects()
 function initObject(parent,radius,distance,textureid,orbitParam,revol){
     var newObject = new sphere(parent,normalizeSize(radius));
     newObject.texture = textures[textureid];
-    newObject.translate([normalizeSize(AU2km(distance)),0,1]);
+    newObject.translate([normalizeSize(AU2km(distance)),0,0]);
     newObject.orbitParam = orbitParam;
     newObject.revol = revol;
 
@@ -168,7 +168,7 @@ function tick() {
     drawScene();
     animate();
 
-    updateTexture(6);
+    //updateTexture(6);
 
 }
 
