@@ -5,14 +5,9 @@
 function initTextures()
 {
 
-    initTexture(0,"./img/sun.jpg");
-    initTexture(1,"./img/earth.jpg");
-    initTexture(2,"./img/moon.gif");
-    initTexture(3,"./img/venus.jpg");
-    initTexture(4,"./img/stars.jpg");
-    initTexture(5,"./img/ring.jpg");
+    textures[0]=initTexture("./img/stars.jpg");
     initVideo();
-    initSpecialTextures(6);
+    initSpecialTextures(1);
 
 
 }
@@ -45,14 +40,15 @@ function initSpecialTextures(id){
     handleSpecialTexture(textures[id]);
 }
 
-function initTexture(index,src) {
-    textures[index] = gl.createTexture();
-    textures[index].image = new Image();
-    textures[index].image.onload = function()
+function initTexture(src) {
+    var texture = gl.createTexture();
+    texture.image = new Image();
+    texture.image.onload = function()
     {
-        handleLoadedTexture(textures[index])
+        handleLoadedTexture(texture)
     }
-    textures[index].image.src = src;
+    texture.image.src = src;
+    return texture;
 }
 
 function handleLoadedTexture(texture)

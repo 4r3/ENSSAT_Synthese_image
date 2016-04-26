@@ -54,30 +54,41 @@ R_sun = 696342;
 R_earth = 6378;
 R_moon = 1737;
 R_venus = 6051;
+R_mercury = 2439.7;
 
 
 //distance in AU
 D_earth = 1;
 D_moon = 0.00257;
 D_venus = 0.723332;
+D_mercury = 0.387;
 
 //orbit speed in rad/day
 
 O_earth = 2*Math.PI/365;
 O_venus = 2*Math.PI/224.7;
 O_moon = 2*Math.PI/27.32;
+O_mercury = 2*Math.PI/ 87.96934;
 
 //revol speed in rad/day
 Re_sun = 2*Math.PI/29;
 Re_earth = 2*Math.PI;
 Re_venus = 2*Math.PI/-243;
 Re_moon = O_moon;
+Re_mercury = 58.6462;
+
+//textures sources
+tex_sun="./img/sun.jpg";
+tex_earth="./img/earth.jpg";
+tex_moon="./img/moon.gif";
+tex_venus="./img/venus.jpg";
+tex_mercury="./img/mercury.jpg";
 
 
 //scale factor
 Kt=1;
-Ks = 1/3;
-Ks2 = 100;
+Ks = 1/2;
+Ks2 = 1000;
 
 
 
@@ -121,30 +132,31 @@ function initWorldObjects()
 {
 
     var myskybox = new skybox(null);
-    myskybox.texture = textures[4];
+    myskybox.texture = textures[0];
 
     myCamera.skybox = myskybox;
 
     rootObject = new sphere(null,250*km2AU(R_sun),true);
-    rootObject.texture = textures[0];
+    rootObject.texture = initTexture(tex_sun);
     rootObject.revol = Re_sun;
 
-    var earth = initObject(rootObject,R_earth,D_earth,1,O_earth,Re_earth);
-    initObject(earth,R_moon,D_moon,2,O_moon,Re_moon);
-    initObject(rootObject,R_venus,D_venus,3,O_venus,Re_venus);
+    var earth = initObject(rootObject,R_earth,D_earth,tex_earth,O_earth,Re_earth);
+    initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);
+    initObject(rootObject,R_venus,D_venus,tex_venus,O_venus,Re_venus);
+    initObject(rootObject,R_mercury,D_mercury,tex_mercury,O_mercury,Re_mercury);
 
     return rootObject;
 }
 
-function initObject(parent,radius,distance,textureid,orbitParam,revol){
+function initObject(parent,radius,distance,texture_src,orbitParam,revol){
     var newObject = new sphere(parent,normalizeSize(radius));
-    newObject.texture = textures[textureid];
+    newObject.texture = initTexture(texture_src);
     newObject.translate([normalizeSize(AU2km(distance)),0,0]);
     newObject.orbitParam = orbitParam;
     newObject.revol = revol;
 
     var OrbitObject = new orbitLine(parent,normalizeSize(AU2km(distance)));
-    OrbitObject.texture = textures[textureid];
+    OrbitObject.texture = newObject.texture;
 
     return newObject;
 }
