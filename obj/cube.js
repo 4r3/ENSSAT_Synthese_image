@@ -1,16 +1,12 @@
 class cube extends worldObject {
 	constructor(parent) {
 		super(parent);
-		var buffers = this.initBuffers();
-		this.vertexPositionBuffer = buffers[0];
-		this.vertexTextureCoordBuffer = buffers[1];
-		this.vertexIndexBuffer = buffers[2];
-		this.vertexNormalsBuffer = buffers[3];
+		this.initBuffers();
 	}
 
 	initBuffers() {
-		var cubeVertexPositionBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
+		this.vertexPositionBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
 		var vertices = [
 			// Front face
 			-1.0, -1.0, 1.0,
@@ -44,11 +40,11 @@ class cube extends worldObject {
 			-1.0, 1.0, -1.0,
 		];
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-		cubeVertexPositionBuffer.itemSize = 3;
-		cubeVertexPositionBuffer.numItems = 24;
+		this.vertexPositionBuffer.itemSize = 3;
+		this.vertexPositionBuffer.numItems = 24;
 
-		var cubeVertexNormalBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexNormalBuffer);
+		this.vertexNormalsBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
 		var vertexNormals = [
 			// Front face
 			0.0, 0.0, 1.0,
@@ -82,11 +78,11 @@ class cube extends worldObject {
 			-1.0, 0.0, 0.0
 		];
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexNormals), gl.STATIC_DRAW);
-		cubeVertexNormalBuffer.itemSize = 3;
-		cubeVertexNormalBuffer.numItems = 24;
+		this.vertexNormalsBuffer.itemSize = 3;
+		this.vertexNormalsBuffer.numItems = 24;
 
-		var cubeVertexTextureCoordBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
+		this.vertexTextureCoordBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
 		var textureCoords = [
 			// Front face
 			0.0, 0.0,
@@ -120,11 +116,11 @@ class cube extends worldObject {
 			0.0, 1.0
 		];
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-		cubeVertexTextureCoordBuffer.itemSize = 2;
-		cubeVertexTextureCoordBuffer.numItems = 24;
+		this.vertexTextureCoordBuffer.itemSize = 2;
+		this.vertexTextureCoordBuffer.numItems = 24;
 
-		var cubeVertexIndexBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
+		this.vertexIndexBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertexIndexBuffer);
 		var cubeVertexIndices = [
 			0, 1, 2, 0, 2, 3,    // Front face
 			4, 5, 6, 4, 6, 7,    // Back face
@@ -134,8 +130,8 @@ class cube extends worldObject {
 			20, 21, 22, 20, 22, 23  // Left face
 		];
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
-		cubeVertexIndexBuffer.itemSize = 1;
-		cubeVertexIndexBuffer.numItems = 36;
-		return [cubeVertexPositionBuffer, cubeVertexTextureCoordBuffer, cubeVertexIndexBuffer, cubeVertexNormalBuffer];
+		this.vertexIndexBuffer.itemSize = 1;
+		this.vertexIndexBuffer.numItems = 36;
 	}
+	
 }

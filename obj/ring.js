@@ -1,26 +1,20 @@
-ring.prototype= new worldObject;
-	function ring(parent,Rmn,Rmx)
+class ring extends worldObject{
+	constructor(parent,Rmn,Rmx)
 	{
-		this.base = worldObject;
-		this.base (parent);
-		var buffers = this.initBuffers(Rmn,Rmx);
-		//this.vertexPositionBuffer = this.initVertexPositionBuffer();
-		//this.vertexTextureCoordBuffer = this.initTextureCoordPositionBuffer();
-		this.vertexPositionBuffer = buffers[0];
-		this.vertexTextureCoordBuffer = buffers[1];
-		this.vertexIndexBuffer = buffers[2];
+		super(parent);
+		this.initBuffers(Rmn,Rmx);
 
 		//TODO add normal calculation
 	}
 
-	ring.prototype.initBuffers = function(Rmn,Rmx)
+	initBuffers(Rmn,Rmx)
 	{
-		vertexPositionBuffer = gl.createBuffer();
-		vertexTextureCoordBuffer = gl.createBuffer();
-		vertexIndexBuffer = gl.createBuffer();
+		this.vertexPositionBuffer = gl.createBuffer();
+		this.vertexTextureCoordBuffer = gl.createBuffer();
+		this.vertexIndexBuffer = gl.createBuffer();
 
-		vertices = [];
-        textureCoords = [];
+		var vertices = [];
+        var textureCoords = [];
 		var nbVertice = 0;
 		var sphereVertexIndices = [];
 		var nbTriangles = 0;
@@ -32,7 +26,7 @@ ring.prototype= new worldObject;
 			for (var longi = 0; longi <= tetaMax; longi += pasLong) {
 				vertices = vertices.concat(pol2Cart(longi, 0, R)); //A
 
-				textureCoords = textureCoords.concat([(Rmx-R) / (Rmx - Rmn),10*longi / tetaMax]);
+				textureCoords = textureCoords.concat(this.calcTextureCoords(longi,R,Rmn,Rmx));
 				if (longi != tetaMax) {
 					if (R < Rmx) {
 						sphereVertexIndices = sphereVertexIndices.concat([
@@ -55,22 +49,26 @@ ring.prototype= new worldObject;
 		console.log(nbTriangles);
 
 
-		vertexPositionBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
+		this.vertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-        vertexPositionBuffer.itemSize = 3;
-        vertexPositionBuffer.numItems = nbVertice;
+		this.vertexPositionBuffer.itemSize = 3;
+		this.vertexPositionBuffer.numItems = nbVertice;
 
-		vertexIndexBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer);
+		this.vertexIndexBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertexIndexBuffer);
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(sphereVertexIndices), gl.STATIC_DRAW);
-		vertexIndexBuffer.itemSize = 1;
-		vertexIndexBuffer.numItems = nbTriangles*3;
+		this.vertexIndexBuffer.itemSize = 1;
+		this.vertexIndexBuffer.numItems = nbTriangles*3;
 
-		vertexTextureCoordBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, vertexTextureCoordBuffer);
+		this.vertexTextureCoordBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-		vertexTextureCoordBuffer.itemSize = 2;
-		vertexTextureCoordBuffer.numItems = nbVertice;
-		return [vertexPositionBuffer, vertexTextureCoordBuffer, vertexIndexBuffer];
+		this.vertexTextureCoordBuffer.itemSize = 2;
+		this.vertexTextureCoordBuffer.numItems = nbVertice;
 	}
+
+	calcTextureCoords(longi,R,Rmn,Rmx){
+		return [(Rmx-R) / (Rmx - Rmn),10*longi / tetaMax];
+	}
+}

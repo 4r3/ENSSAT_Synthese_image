@@ -1,18 +1,12 @@
 class orbitLine extends worldObject {
 	constructor(parent, R) {
 		super(parent)
-		var buffers = this.initBuffers(R);
-		this.vertexPositionBuffer = buffers[0];
-		this.vertexTextureCoordBuffer = buffers[1];
-
-		this.isOrbitLine = true;
-
-		this.lightinEnabled = false;
+		this.initBuffers(R);
 	}
 
 	initBuffers(R) {
-		var vertexPositionBuffer = gl.createBuffer();
-		var vertexTextureCoordBuffer = gl.createBuffer();
+		this.vertexPositionBuffer = gl.createBuffer();
+		this.vertexTextureCoordBuffer = gl.createBuffer();
 
 		var vertices = [];
 		var textureCoords = [];
@@ -28,18 +22,17 @@ class orbitLine extends worldObject {
 		}
 
 
-		vertexPositionBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
+		this.vertexPositionBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-		vertexPositionBuffer.itemSize = 3;
-		vertexPositionBuffer.numItems = nbVertice;
+		this.vertexPositionBuffer.itemSize = 3;
+		this.vertexPositionBuffer.numItems = nbVertice;
 
-		vertexTextureCoordBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, vertexTextureCoordBuffer);
+		this.vertexTextureCoordBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-		vertexTextureCoordBuffer.itemSize = 2;
-		vertexTextureCoordBuffer.numItems = nbVertice;
-		return [vertexPositionBuffer, vertexTextureCoordBuffer];
+		this.vertexTextureCoordBuffer.itemSize = 2;
+		this.vertexTextureCoordBuffer.numItems = nbVertice;
 	}
 
 	draw() {
