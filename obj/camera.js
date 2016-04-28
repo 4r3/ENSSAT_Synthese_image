@@ -14,7 +14,7 @@ class camera extends worldObject {
 		if (this.skybox != null) {
 			mvPushMatrix();
 			mat4.multiply(mvMatrix, this.rotation);
-			this.skybox.draw();
+			//this.skybox.draw();
 			mvPopMatrix();
 		}
 

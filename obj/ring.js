@@ -3,6 +3,9 @@ class ring extends worldObject{
 	{
 		super(parent);
 		this.initBuffers(Rmn,Rmx);
+		this.lightinEnabled = false;
+		//this.blending = 1;
+		//this.alpha = 0.8;
 
 		//TODO add normal calculation
 	}
@@ -69,6 +72,6 @@ class ring extends worldObject{
 	}
 
 	calcTextureCoords(longi,R,Rmn,Rmx){
-		return [(Rmx-R) / (Rmx - Rmn),10*longi / tetaMax];
+		return [1-((Rmx-R) / (Rmx - Rmn)),30*longi / tetaMax];
 	}
 }

@@ -79,7 +79,7 @@ Re_mercury = 58.6462;
 
 //textures sources
 tex_sun="./img/sun.jpg";
-tex_earth="./img/earth.jpg";
+tex_earth="./img/earth2.jpg";
 tex_moon="./img/moon.gif";
 tex_venus="./img/venus.jpg";
 tex_mercury="./img/mercury.jpg";
@@ -136,9 +136,13 @@ function initWorldObjects()
 
     myCamera.skybox = myskybox;
 
-    rootObject = new sphere(null,250*km2AU(R_sun),true);
+    rootObject = new sphere(null,normalizeSize(R_sun),true);
     rootObject.texture = initTexture(tex_sun);
     rootObject.revol = Re_sun;
+
+
+    //var myring = new ring(rootObject,normalizeSize(R_sun),2*normalizeSize(R_sun))
+    //myring.texture = initTexture("./img/ring2.jpg");
 
     var earth = initObject(rootObject,R_earth,D_earth,tex_earth,O_earth,Re_earth);
     initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);

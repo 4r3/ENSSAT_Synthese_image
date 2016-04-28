@@ -52,23 +52,23 @@ function handleKeyDown(event)
     switch(event.keyCode)
     {
         case 37: //left
-            myCamera.translate([1,0,0]);
+            myCamera.translate([0.1,0,0]);
             break;
         case 39: //right
-            myCamera.translate([-1,0,0]);
+            myCamera.translate([-0.1,0,0]);
             break;
         case 38: //down
-            myCamera.translate([0,0,1]);
+            myCamera.translate([0,0,0.1]);
             break;
         case 40: //forward
-            myCamera.translate([0,0,-1]);
+            myCamera.translate([0,0,-0.1]);
             break;
         case 33: //pageUp
-            myCamera.translate([0,-1,0]);
+            myCamera.translate([0,-0.1,0]);
             camY++;
             break;
         case 34: //pageDown
-            myCamera.translate([0,1,0]);
+            myCamera.translate([0,0.1,0]);
             camY--;
             break;
         case 116:

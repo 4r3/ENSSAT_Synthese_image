@@ -18,8 +18,7 @@ class worldObject {
 		this.lightinEnabled = 1;
 		this.blending = 0;
 		this.alpha = 1;
-		this.isSkybox = false;
-
+		
 		this.orbitParam = 0;
 		this.revol = 0;
 

@@ -1,10 +1,7 @@
 class sphere extends worldObject{
 
-	constructor(parent, R, ligthEmitter) {
-		ligthEmitter = typeof ligthEmitter !== 'undefined' ? ligthEmitter : false;
-
+	constructor(parent, R, ligthEmitter = false) {
 		super(parent);
-
 		this.isLigthSource = ligthEmitter;
 		this.initBuffers(R, ligthEmitter);
 	}
@@ -22,10 +19,11 @@ class sphere extends worldObject{
 		var nbTriangles = 0;
 		var resLat = 0;
 		var resLongi = tetaMax / pasLong + 1;
+		var nbNormals = [];
 		for (var lat = -90; lat <= phiMax; lat += pasLat) {
 			for (var longi = 0; longi <= tetaMax; longi += pasLong) {
 				vertices = vertices.concat(pol2Cart(longi, lat, R)); //A
-				normals = normals.concat(pol2Cart(longi, lat, Ke));
+				normals = normals.concat([0,0,0]);
 				textureCoords = textureCoords.concat(this.calcTextureCoords(longi,lat));
 				if (longi != tetaMax) {
 					if (lat < phiMax) {
@@ -46,6 +44,9 @@ class sphere extends worldObject{
 			}
 			resLat++;
 		}
+
+		normals = this.calcNormals(normals,vertices,sphereVertexIndices,Ke);
+
 
 		this.vertexPositionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
@@ -74,6 +75,43 @@ class sphere extends worldObject{
 
 	calcTextureCoords(longi,lat){
 		return [longi / tetaMax, (90 + lat) / (90 + phiMax)];
+	}
+
+	getTriangleNormal(a, b, c) {
+		var normal,edge1,edge2;
+		edge1 = vec3.subtract(b,a);
+		edge2 = vec3.subtract(c,a);
+		normal = vec3.cross(edge1,edge2);
+		return normal;
+	}
+
+	getVertice(vertices,i){
+		return [vertices[i*3],vertices[i*3+1],vertices[i*3+2]];
+	}
+
+	calcNormals(normals,vertices,VertexIndices,Ke){
+		for(var i=0;i<VertexIndices.length*3;i+=3){
+			var a = this.getVertice(vertices,VertexIndices[i]);
+			var b = this.getVertice(vertices,VertexIndices[i+1]);
+			var c = this.getVertice(vertices,VertexIndices[i+2]);
+			var norm = this.getTriangleNormal(b,c,a);
+
+			for(var j=0;j<3;j++){
+
+				for(var k=0;k<3;k++){
+					normals[VertexIndices[i+j]*3+k]+=norm[k];
+				}
+			}
+		}
+
+		for(var i=0;i<vertices.length/3;i++){
+			var norm = this.getVertice(normals,i);
+			norm = vec3.normalize(norm);
+			normals[i*3]=norm[0]*Ke;
+			normals[i*3+1]=norm[1]*Ke;
+			normals[i*3+2]=norm[2]*Ke;
+		}
+		return normals;
 	}
 }
 
