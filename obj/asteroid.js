@@ -1,4 +1,4 @@
-class sphere extends worldObject{
+class asteroid extends worldObject{
 
 	constructor(parent, R, ligthEmitter = false) {
 		super(parent);
@@ -21,7 +21,7 @@ class sphere extends worldObject{
 		var resLongi = tetaMax / pasLong + 1;
 		for (var lat = -90; lat <= phiMax; lat += pasLat) {
 			for (var longi = 0; longi <= tetaMax; longi += pasLong) {
-				vertices = vertices.concat(pol2Cart(longi, lat, R)); //A
+				vertices = vertices.concat(this.calcVertice(longi, lat, R)); //A
 				normals = normals.concat([0,0,0]);
 				textureCoords = textureCoords.concat(this.calcTextureCoords(longi,lat));
 				if (longi != tetaMax) {
@@ -64,7 +64,7 @@ class sphere extends worldObject{
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
 		this.vertexTextureCoordBuffer.itemSize = 2;
 		this.vertexTextureCoordBuffer.numItems = nbVertice;
-		
+
 		this.vertexNormalsBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
@@ -111,6 +111,11 @@ class sphere extends worldObject{
 			normals[i*3+2]=norm[2]*Ke;
 		}
 		return normals;
+	}
+
+	calcVertice(longi, lat, R){
+		R += R*Math.cos(degToRad(lat/2));
+		return pol2Cart(longi, lat, R);
 	}
 }
 

@@ -136,6 +136,13 @@ function initWorldObjects()
     rootObject.texture = initTexture(tex_sun);
     rootObject.revol = Re_sun;
 
+
+    var myAsteroid = new asteroid(rootObject,normalizeSize(R_sun));
+    myAsteroid.translate([normalizeSize(AU2km(D_mercury)),0,0]);
+    myAsteroid.texture = initTexture("./img/asteroid.jpg");
+
+
+
     //var myring = new ring(rootObject,normalizeSize(R_sun),2*normalizeSize(R_sun))
     //myring.texture = initTexture("./img/ring2.jpg");
 
