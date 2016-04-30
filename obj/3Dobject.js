@@ -1,7 +1,7 @@
 
 class worldObject {
 	constructor(parent) {
-		this.parent = parent;
+		this.parent = null;
 		this.trans = mat4.create();
 		this.rotation = mat4.create();
 		this.orbitmat = mat4.create();
@@ -25,11 +25,30 @@ class worldObject {
 		mat4.identity(this.trans);
 		mat4.identity(this.rotation);
 		mat4.identity(this.orbitmat);
-		if (parent != null) parent.addChild(this);
+
+		this.setParent(parent);
+
 	}
 
 	addChild(child) {
 		this.children.push(child);
+	}
+
+	remChild(child){
+		var index = this.children.indexOf(child);
+		if(index > -1){
+			this.children.splice(index, 1);
+		}
+	}
+
+	setParent(parent){
+		if(this.parent!=null){
+			this.parent.remChild(this);
+		}
+		this.parent = parent;
+		if(parent!=null){
+			parent.addChild(this);
+		}
 	}
 
 	translate(translation) {

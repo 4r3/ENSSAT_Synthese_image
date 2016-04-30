@@ -1,54 +1,64 @@
 class camera extends worldObject {
 	constructor(parent) {
-		super(parent)
+		super(parent);
 		this.skybox = null;
-		this.translate([0, -15, 0]);
-		this.rotate(Math.PI / 2, [1, 0, 0]);
+		this.isDrawing = false;
 
-
-		//this.oldestParent = null;
 	}
 
 	draw() {
+		if(!this.isDrawing) {
+			this.isDrawing = true;
+			if (this.skybox != null) {
+				mvPushMatrix();
+				mat4.multiply(mvMatrix, this.rotation);
+				this.skybox.draw();  //TODO uncomment when publish
+				mvPopMatrix();
+			}
 
-		if (this.skybox != null) {
-			mvPushMatrix();
-			mat4.multiply(mvMatrix, this.rotation);
-			//this.skybox.draw();
-			mvPopMatrix();
+			mat4.multiply(mvMatrix, this.trans);
+
+			mat4.multiply(mvMatrix, this.orbitmat);
+
+
+			setMatrixUniforms();
+
+			this.oldestParent.draw();
+			this.isDrawing = false;
 		}
 
-		mat4.multiply(mvMatrix, this.trans);
-
-
-		//setMatrixUniforms();
-		/*
-		 if(parent==null){
-		 for(var i =0; i< this.children.length; i++)
-		 {
-		 this.children[i].draw();
-		 }
-		 }else{
-		 this.oldestParent.draw();
-		 }*/
 	}
 
-	animate(elapsedTime) {
-		//this.getTransMatrix();
-		//mat4.invert(this.trans);
-	}
-
-	getTransMatrix(parent) {
-		if (parent.parent = null) {
-			this.oldestParent = parent;
-			mat4.identity(this.trans)
-		} else {
-			this.getTransMatrix(parent.parent);
+	setParent(parent){
+		super.setParent(parent);
+		if(parent!=null) {
+			this.oldestParent = this.parent;
+			while (this.oldestParent.parent != null) {
+				this.oldestParent = this.oldestParent.parent;
+			}
 		}
-		mat4.multiply(this.trans, parent.orbitmat);
-		mat4.multiply(this.trans, parent.trans);
+
 	}
 
+	getTransMatrix(parent){
+		var mat;
+		if(parent==null) {
+			mat = mat4.create();
+			mat4.identity(mat);
+		}
+		else {
+			mat = this.getTransMatrix(parent.parent);
+			mat4.multiply(mat, parent.orbitmat);
+			mat4.multiply(mat, parent.trans);
+
+		}
+		return mat;
+	}
+
+	animate(){
+		var mat = this.getTransMatrix(this.parent);
+		this.orbitmat = mat4.inverse(mat);
+	}
 
 	translate(translation) {
 		this.trans[12] += translation[0];

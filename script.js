@@ -122,10 +122,6 @@ function drawScene()
     mat4.identity(mvMatrix);
 
     myCamera.draw();
-
-    setMatrixUniforms();
-
-    rootObject.draw();
 }
 
 function initWorldObjects()
@@ -140,14 +136,15 @@ function initWorldObjects()
     rootObject.texture = initTexture(tex_sun);
     rootObject.revol = Re_sun;
 
-
     //var myring = new ring(rootObject,normalizeSize(R_sun),2*normalizeSize(R_sun))
     //myring.texture = initTexture("./img/ring2.jpg");
 
     var earth = initObject(rootObject,R_earth,D_earth,tex_earth,O_earth,Re_earth);
-    initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);
+    var moon = initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);
     initObject(rootObject,R_venus,D_venus,tex_venus,O_venus,Re_venus);
     initObject(rootObject,R_mercury,D_mercury,tex_mercury,O_mercury,Re_mercury);
+
+    myCamera.setParent(moon);
 
     return rootObject;
 }
