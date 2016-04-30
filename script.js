@@ -140,6 +140,7 @@ function initWorldObjects()
     var myAsteroid = new asteroid(rootObject,normalizeSize(R_sun));
     myAsteroid.translate([normalizeSize(AU2km(D_mercury)),0,0]);
     myAsteroid.texture = initTexture("./img/asteroid.jpg");
+    myAsteroid.revol = Re_sun;
 
 
 
