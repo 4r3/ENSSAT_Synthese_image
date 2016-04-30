@@ -3,6 +3,9 @@ class asteroid extends worldObject{
 	constructor(parent, R, ligthEmitter = false) {
 		super(parent);
 		this.isLigthSource = ligthEmitter;
+		this.randSeed = [];
+		this.genRandSeed();
+		console.log(this.randSeed);
 		this.initBuffers(R, ligthEmitter);
 	}
 
@@ -73,7 +76,7 @@ class asteroid extends worldObject{
 	}
 
 	calcTextureCoords(longi,lat){
-		return [longi / tetaMax, (90 + lat) / (90 + phiMax)];
+		return [10*longi / tetaMax, 10*(90 + lat) / (90 + phiMax)];
 	}
 
 	getTriangleNormal(a, b, c) {
@@ -114,8 +117,50 @@ class asteroid extends worldObject{
 	}
 
 	calcVertice(longi, lat, R){
-		R += R*Math.cos(degToRad(lat/2));
+		var K=0;
+		for(var i = 0; i<this.randSeed.length;i+=4){
+			K+=this.calcCoef(longi,lat,
+				this.randSeed[i],
+				this.randSeed[i+1],
+				this.randSeed[i+2],
+				this.randSeed[i+3]);
+		}
+		R += (R/2)*K;
 		return pol2Cart(longi, lat, R);
+	}
+
+	calcCoef(longi, lat,espLong = 0,espLat = 0,eTyp = 10, heigth = 1){
+
+		//this bloc is to avoid bad closure
+		if(espLat > 50 | espLat < -50){
+			espLong = 0;
+			longi = 0;
+		}else {
+			if (longi > 180 & espLong < 180)
+				longi = longi - 360;
+			else if (longi < 180 & espLong > 180)
+				longi = longi + 360;
+		}
+
+		//calculate the dilatation coef
+		var coef = heigth/(Math.sqrt(2*Math.PI));
+		coef *= Math.exp(Math.pow((lat-espLat),2)/(-2*eTyp*eTyp));
+		coef *= Math.exp(Math.pow((longi-espLong),2)/(-2*eTyp*eTyp));
+		return coef;
+	}
+
+	genRandSeed(){
+		for(var i = 0; i<2; i++){
+			var long = Math.random() * 360;
+			var lat = Math.random() * 180 - 90;
+			var radius = (Math.random() * 20)+10;
+			var height = (Math.random() * 10)-1;
+			this.randSeed.push(long);
+			this.randSeed.push(lat);
+			this.randSeed.push(radius);
+			this.randSeed.push(height);
+		}
+
 	}
 }
 
