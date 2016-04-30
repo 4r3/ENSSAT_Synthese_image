@@ -3,8 +3,8 @@ class camera extends worldObject {
 		super(parent);
 		this.skybox = null;
 		this.isDrawing = false;
-		this.translate([0,10,0]);
-		this.rotate(-Math.PI/2,[1,0,0]);
+		this.translate([0,-10,0]);
+		this.rotate(Math.PI/2,[1,0,0]);
 
 	}
 
