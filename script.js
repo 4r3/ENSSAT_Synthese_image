@@ -144,7 +144,7 @@ function initWorldObjects()
     initObject(rootObject,R_venus,D_venus,tex_venus,O_venus,Re_venus);
     initObject(rootObject,R_mercury,D_mercury,tex_mercury,O_mercury,Re_mercury);
 
-    myCamera.setParent(moon);
+    myCamera.setParent(rootObject);
 
     return rootObject;
 }

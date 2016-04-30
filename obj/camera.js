@@ -3,6 +3,8 @@ class camera extends worldObject {
 		super(parent);
 		this.skybox = null;
 		this.isDrawing = false;
+		this.translate([0,10,0]);
+		this.rotate(-Math.PI/2,[1,0,0]);
 
 	}
 
@@ -12,7 +14,7 @@ class camera extends worldObject {
 			if (this.skybox != null) {
 				mvPushMatrix();
 				mat4.multiply(mvMatrix, this.rotation);
-				this.skybox.draw();  //TODO uncomment when publish
+				//this.skybox.draw();  //TODO uncomment when publish
 				mvPopMatrix();
 			}
 
