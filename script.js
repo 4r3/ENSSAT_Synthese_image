@@ -23,10 +23,6 @@ var lastMouseX = null;
 var lastMouseY = null;
 var currentZoom = 1;
 
-var toggleTriangle = true;
-var toggleSquare= true;
-var toggleSphere= true;
-
 //world
 var rootObject;
 var tempSkybox;
