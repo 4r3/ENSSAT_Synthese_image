@@ -5,7 +5,6 @@ class asteroid extends worldObject{
 		this.isLigthSource = ligthEmitter;
 		this.randSeed = [];
 		this.genRandSeed();
-		console.log(this.randSeed);
 		this.initBuffers(R, ligthEmitter);
 	}
 

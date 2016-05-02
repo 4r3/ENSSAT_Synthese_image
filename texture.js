@@ -4,12 +4,8 @@
 
 function initTextures()
 {
-
-    textures[0]=initTexture("./img/stars.jpg");
     initVideo();
-    initSpecialTextures(1);
-
-
+    initSpecialTextures();
 }
 
 function initVideo() {
@@ -20,9 +16,6 @@ function initVideo() {
 
     video.isReady = false;
     video.preload = "auto";
-
-    //video.autoplay = true;
-    //video.loop = true;
 }
 
 function startVideo() {
@@ -31,13 +24,13 @@ function startVideo() {
 }
 
 function videoDone() {
-    myCamera.skybox.texture = textures[4];
+    myCamera.skybox.texture = tempSkybox;
     video.isReady = false;
 }
 
-function initSpecialTextures(id){
-    textures[id] = gl.createTexture();
-    handleSpecialTexture(textures[id]);
+function initSpecialTextures(){
+    videoTexture = gl.createTexture();
+    handleSpecialTexture(videoTexture);
 }
 
 function initTexture(src) {
@@ -70,8 +63,8 @@ function handleSpecialTexture(texture){
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 }
 
-function updateTexture(id) {
-    gl.bindTexture(gl.TEXTURE_2D, textures[id]);
+function updateTexture() {
+    gl.bindTexture(gl.TEXTURE_2D, videoTexture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     if (video.isReady) {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, video);//todo find how to stop errors

@@ -48,7 +48,6 @@ function handleKeyDown(event)
     event.preventDefault();
     var transmat = mat4.create();
     mat4.identity(transmat);
-    //mat4.multiply(transmat,userRotationMatrix);
     switch(event.keyCode)
     {
         case 37: //left
@@ -65,11 +64,9 @@ function handleKeyDown(event)
             break;
         case 33: //pageUp
             myCamera.translate([0,-0.1,0]);
-            camY++;
             break;
         case 34: //pageDown
             myCamera.translate([0,0.1,0]);
-            camY--;
             break;
         case 116:
             window.location.reload();
@@ -87,29 +84,13 @@ function drawCombo(list)
     drawStyle = list.selectedIndex;
 }
 
-function handleClick(checkMesh)
-{
-    switch(checkMesh.value)
-    {
-        case 'triangle':
-            toggleTriangle = checkMesh.checked;
-            break;
-        case 'cube':
-            toggleSquare = checkMesh.checked;
-            break;
-        case 'sphere':
-            toggleSphere = checkMesh.checked;
-            break;
-        default:
-    }
-}
-
 function handleSlider1(sliderValue)
 {
     Kt = sliderValue;
 }
 
 function surprise() {
-    myCamera.skybox.texture = textures[6];
+    tempSkybox = myCamera.skybox.texture;
+    myCamera.skybox.texture = videoTexture;
     video.play();
 }

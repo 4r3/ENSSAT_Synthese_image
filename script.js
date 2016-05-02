@@ -10,16 +10,10 @@ var mvMatrixStack = [];
 var pMatrix = mat4.create();
 
 //textures
-var textures =[];
+var videoTexture;
 
 //interaction
 var drawStyle;
-
-var userRotationMatrix = mat4.create();
-mat4.identity(userRotationMatrix);
-
-var userCameraMatrix = mat4.create();
-
 
 var myCamera = new camera(null);
 
@@ -32,10 +26,6 @@ var currentZoom = 1;
 var toggleTriangle = true;
 var toggleSquare= true;
 var toggleSphere= true;
-
-var camX = 0;
-var camY = 0;
-var camZ = 0;
 
 //world
 var rootObject;
@@ -128,7 +118,7 @@ function initWorldObjects()
 {
 
     var myskybox = new skybox(null);
-    myskybox.texture = textures[0];
+    myskybox.texture = initTexture("./img/stars.jpg");
 
     myCamera.skybox = myskybox;
 
@@ -137,8 +127,8 @@ function initWorldObjects()
     rootObject.revol = Re_sun;
 
 
-    var myAsteroid = new asteroid(rootObject,normalizeSize(R_sun));
-    myAsteroid.translate([normalizeSize(AU2km(D_mercury)),0,0]);
+    var myAsteroid = new asteroid(rootObject,normalizeSize(R_mercury));
+    myAsteroid.translate([normalizeSize(AU2km(D_mercury/2)),0,0]);
     myAsteroid.texture = initTexture("./img/asteroid.jpg");
     myAsteroid.revol = Re_sun;
 
@@ -187,7 +177,7 @@ function tick() {
     drawScene();
     animate();
 
-    //updateTexture(6);
+    updateTexture();
 
 }
 
