@@ -3,55 +3,6 @@
  */
 
 
-
-
-function getShader(gl, id)
-{
-    var shaderScript = document.getElementById(id);
-    if (!shaderScript)
-    {
-        return null;
-    }
-
-    var str = "";
-    var k = shaderScript.firstChild;
-    while (k)
-    {
-        if (k.nodeType == 3)
-        {
-            str += k.textContent;
-        }
-        k = k.nextSibling;
-    }
-
-    var shader;
-    if (shaderScript.type == "x-shader/x-fragment")
-    {
-        shader = gl.createShader(gl.FRAGMENT_SHADER);
-    } else if (shaderScript.type == "x-shader/x-vertex")
-    {
-        shader = gl.createShader(gl.VERTEX_SHADER);
-    } else if (shaderScript.type == "x-shader/x-vertex")
-    {
-        shader = gl.createShader(gl.VERTEX_SHADER);
-    }
-    else
-    {
-        return null;
-    }
-
-    gl.shaderSource(shader, str);
-    gl.compileShader(shader);
-
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-    {
-        alert(gl.getShaderInfoLog(shader));
-        return null;
-    }
-
-    return shader;
-}
-
 var get_shader=function(source, type, typeString) {
     var shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -65,6 +16,23 @@ var get_shader=function(source, type, typeString) {
 
 function initShaders()
 {
+
+    var shader_vertex_shadowMap=get_shader(shader_vertex_source_shadowMap,
+        GL.VERTEX_SHADER, "VERTEX SHADOW");
+    var shader_fragment_shadowMap=get_shader(shader_fragment_source_shadowMap,
+        GL.FRAGMENT_SHADER, "FRAGMENT SHADOW");
+
+    var SHADER_PROGRAM_SHADOW=GL.createProgram();
+    GL.attachShader(SHADER_PROGRAM_SHADOW, shader_vertex_shadowMap);
+    GL.attachShader(SHADER_PROGRAM_SHADOW, shader_fragment_shadowMap);
+
+    GL.linkProgram(SHADER_PROGRAM_SHADOW);
+
+    var _PmatrixShadow = GL.getUniformLocation(SHADER_PROGRAM_SHADOW, "Pmatrix");
+    var _LmatrixShadow = GL.getUniformLocation(SHADER_PROGRAM_SHADOW, "Lmatrix");
+
+    var _positionShadow = GL.getAttribLocation(SHADER_PROGRAM_SHADOW, "position");
+    
     var vertexShader=get_shader(shader_vertex_source, gl.VERTEX_SHADER, "VERTEX");
     var fragmentShader=get_shader(shader_fragment_source, gl.FRAGMENT_SHADER, "FRAGMENT");
 
