@@ -133,15 +133,13 @@ class asteroid extends worldObject{
 
 		var coef = 1;
 
+		coef *= Math.cos(degToRad(lat));
+
 		//this bloc is to avoid bad closure
-		if(espLat > 60 | espLat < -60){
-			coef *= Math.cos(lat);
-		}else {
-			if (longi > 180 & espLong < 90)
-				longi = longi - 360;
-			else if (longi < 180 & espLong > 270)
-				longi = longi + 360;
-		}
+		if (longi > 180 & espLong < 90)
+			longi = longi - 360;
+		else if (longi < 180 & espLong > 270)
+			longi = longi + 360;
 
 		//calculate the dilatation coef
 		coef *= heigth/(Math.sqrt(2*Math.PI));
@@ -151,11 +149,22 @@ class asteroid extends worldObject{
 	}
 
 	genRandSeed(){
-		for(var i = 0; i<=10; i++){
+		for(var i = 0; i<=100; i++){
 			var long = Math.random() * 360;
-			var lat = Math.random() * 90 - 45;
-			var radius = (Math.random() * 30)+20;
-			var height = (Math.random() * 10)-1;
+			var lat = Math.random() * 180 - 90;
+			var radius = (Math.random() * 30)+10;
+			var height = (Math.random() * 5);
+			this.randSeed.push(long);
+			this.randSeed.push(lat);
+			this.randSeed.push(radius);
+			this.randSeed.push(height);
+		}
+
+		for(var i = 0; i<=50; i++){
+			var long = Math.random() * 360;
+			var lat = Math.random() * 180 - 90;
+			var radius = (Math.random() * 20)+10;
+			var height = (Math.random() * -2);
 			this.randSeed.push(long);
 			this.randSeed.push(lat);
 			this.randSeed.push(radius);
