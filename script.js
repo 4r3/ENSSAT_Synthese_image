@@ -134,8 +134,13 @@ function initWorldObjects()
 
 
 
-    //var myring = new ring(rootObject,normalizeSize(R_sun),2*normalizeSize(R_sun))
+    var myring = new ring(rootObject,normalizeSize(R_sun),2*normalizeSize(R_sun));
+    myring.texture = initTexture("./img/ring2.jpg");
+    myring.translate([0,0,0]);
+
+    //myring = new ring(rootObject,normalizeSize(R_sun),2*normalizeSize(R_sun));
     //myring.texture = initTexture("./img/ring2.jpg");
+    //myring.translate([0,-1,0]);
 
     var earth = initObject(rootObject,R_earth,D_earth,tex_earth,O_earth,Re_earth);
     var moon = initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);
