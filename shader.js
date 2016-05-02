@@ -52,10 +52,21 @@ function getShader(gl, id)
     return shader;
 }
 
+var get_shader=function(source, type, typeString) {
+    var shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        alert("ERROR IN "+typeString+ " SHADER : " + gl.getShaderInfoLog(shader));
+        return false;
+    }
+    return shader;
+};
+
 function initShaders()
 {
-    var fragmentShader = getShader(gl, "shader-fs");
-    var vertexShader = getShader(gl, "shader-vs");
+    var vertexShader=get_shader(shader_vertex_source, gl.VERTEX_SHADER, "VERTEX");
+    var fragmentShader=get_shader(shader_fragment_source, gl.FRAGMENT_SHADER, "FRAGMENT");
 
     shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertexShader);
