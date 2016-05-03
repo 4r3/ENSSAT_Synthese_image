@@ -3,6 +3,12 @@
  */
 
 
+var _positionShadow;
+var _LmatrixShadow;
+var _PmatrixShadow;
+var SHADER_PROGRAM_SHADOW;
+
+
 var get_shader=function(source, type, typeString) {
     var shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -16,23 +22,29 @@ var get_shader=function(source, type, typeString) {
 
 function initShaders()
 {
-
+    //Create shadow shaders
     var shader_vertex_shadowMap=get_shader(shader_vertex_source_shadowMap,
-        GL.VERTEX_SHADER, "VERTEX SHADOW");
+        gl.VERTEX_SHADER, "VERTEX SHADOW");
     var shader_fragment_shadowMap=get_shader(shader_fragment_source_shadowMap,
-        GL.FRAGMENT_SHADER, "FRAGMENT SHADOW");
+        gl.FRAGMENT_SHADER, "FRAGMENT SHADOW");
 
-    var SHADER_PROGRAM_SHADOW=GL.createProgram();
-    GL.attachShader(SHADER_PROGRAM_SHADOW, shader_vertex_shadowMap);
-    GL.attachShader(SHADER_PROGRAM_SHADOW, shader_fragment_shadowMap);
+    SHADER_PROGRAM_SHADOW = gl.createProgram();
+    gl.attachShader(SHADER_PROGRAM_SHADOW, shader_vertex_shadowMap);
+    gl.attachShader(SHADER_PROGRAM_SHADOW, shader_fragment_shadowMap);
 
-    GL.linkProgram(SHADER_PROGRAM_SHADOW);
+    gl.linkProgram(SHADER_PROGRAM_SHADOW);
 
-    var _PmatrixShadow = GL.getUniformLocation(SHADER_PROGRAM_SHADOW, "Pmatrix");
-    var _LmatrixShadow = GL.getUniformLocation(SHADER_PROGRAM_SHADOW, "Lmatrix");
+    if (!gl.getProgramParameter(SHADER_PROGRAM_SHADOW, gl.LINK_STATUS))
+    {
+        alert("Could not initialise shadow shaders");
+    }
 
-    var _positionShadow = GL.getAttribLocation(SHADER_PROGRAM_SHADOW, "position");
-    
+    _PmatrixShadow = gl.getUniformLocation(SHADER_PROGRAM_SHADOW, "Pmatrix");
+    _LmatrixShadow = gl.getUniformLocation(SHADER_PROGRAM_SHADOW, "Lmatrix");
+
+    _positionShadow = gl.getAttribLocation(SHADER_PROGRAM_SHADOW, "position");
+
+    //Creater nomals shaders
     var vertexShader=get_shader(shader_vertex_source, gl.VERTEX_SHADER, "VERTEX");
     var fragmentShader=get_shader(shader_fragment_source, gl.FRAGMENT_SHADER, "FRAGMENT");
 
@@ -46,17 +58,13 @@ function initShaders()
         alert("Could not initialise shaders");
     }
 
-    gl.useProgram(shaderProgram);
+    //gl.useProgram(shaderProgram);
 
     shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
     shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-    gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
 
     shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
-    gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
-
 
     shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
@@ -72,7 +80,28 @@ function initShaders()
     //transparency
     shaderProgram.alphaUniform = gl.getUniformLocation(shaderProgram, "uAlpha");
     shaderProgram.useBlending = gl.getUniformLocation(shaderProgram, "uUseBlending");
+}
 
+function toggleNormalShader(state) {
+    if(state){
+        gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+        gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+    }else{
+        gl.disableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+        gl.disableVertexAttribArray(shaderProgram.textureCoordAttribute);
+        gl.disableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+    }
+
+
+}
+
+function toggleShadowShader(state) {
+    if(state){
+        gl.enableVertexAttribArray(_positionShadow);
+    }else{
+        gl.disableVertexAttribArray(_positionShadow);
+    }
 }
 
 function mvPushMatrix()
