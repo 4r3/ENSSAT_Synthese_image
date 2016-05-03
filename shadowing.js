@@ -3,7 +3,7 @@
  */
 
 var PROJMATRIX_SHADOW=get_projection_ortho(20, 1, 5, 28);
-var LIGHTDIR=[0.58,0.58,-0.58];
+var LIGHTDIR=[-0.5,-0.5,-0.5];
 var LIGHTMATRIX=lookAtDir(LIGHTDIR, [0,1,0], [0,0,0]);
 var fb;
 
@@ -43,7 +43,9 @@ function renderShadow() {
 
     gl.uniformMatrix4fv(_PmatrixShadow, false, PROJMATRIX_SHADOW);
     gl.uniformMatrix4fv(_LmatrixShadow, false, LIGHTMATRIX);
-
+    mat4.identity(mvMatrix);
+    
+    
     rootObject.drawShadow();
 
     toggleShadowShader(false);

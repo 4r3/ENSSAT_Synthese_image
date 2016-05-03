@@ -6,6 +6,7 @@
 var _positionShadow;
 var _LmatrixShadow;
 var _PmatrixShadow;
+var _MVmatrixShadow;
 var SHADER_PROGRAM_SHADOW;
 
 
@@ -41,6 +42,7 @@ function initShaders()
 
     _PmatrixShadow = gl.getUniformLocation(SHADER_PROGRAM_SHADOW, "Pmatrix");
     _LmatrixShadow = gl.getUniformLocation(SHADER_PROGRAM_SHADOW, "Lmatrix");
+    _MVmatrixShadow = gl.getUniformLocation(SHADER_PROGRAM_SHADOW, "MVMatrix");
 
     _positionShadow = gl.getAttribLocation(SHADER_PROGRAM_SHADOW, "position");
 

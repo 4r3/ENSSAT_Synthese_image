@@ -115,7 +115,15 @@ function drawScene()
 function initWorldObjects()
 {
 
-    var myskybox = new skybox(null);
+    rootObject = new cube(null);
+    rootObject.texture = initTexture(tex_sun)
+
+    obj = new sphere(rootObject,2);
+    obj.texture = initTexture("./img/asteroid.jpg")
+
+    obj.translate([5,5,5]);
+
+    /*var myskybox = new skybox(null);
     myskybox.texture = initTexture("./img/stars.jpg");
 
     myCamera.skybox = myskybox;
@@ -144,7 +152,7 @@ function initWorldObjects()
     var moon = initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);
     initObject(rootObject,R_venus,D_venus,tex_venus,O_venus,Re_venus);
     initObject(rootObject,R_mercury,D_mercury,tex_mercury,O_mercury,Re_mercury);
-
+    */
     myCamera.setParent(rootObject);
 
     return rootObject;

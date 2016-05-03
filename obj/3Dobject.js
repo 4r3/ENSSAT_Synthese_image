@@ -154,11 +154,22 @@ class worldObject {
 	
 	drawShadow(){
 
+		mvPushMatrix();
+		mat4.multiply(mvMatrix, this.orbitmat); //rotate on the rootObject position for orbit simulation
+		mat4.multiply(mvMatrix, this.trans);
+
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
 		gl.vertexAttribPointer(_positionShadow, this.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-		
+
+		gl.uniformMatrix4fv(_MVmatrixShadow, false, mvMatrix);
+
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertexIndexBuffer);
 		gl.drawElements(gl.TRIANGLES, this.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+
+		for (var i = 0; i < this.children.length; i++) {
+			this.children[i].drawShadow();
+		}
+		mvPopMatrix();
 	}
 
 	getTriangleNormal(a, b, c) {
