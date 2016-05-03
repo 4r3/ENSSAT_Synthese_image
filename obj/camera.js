@@ -11,11 +11,14 @@ class camera extends worldObject {
 	draw() {
 		if(!this.isDrawing) {
 			this.isDrawing = true;
+
+			mat4.perspective(60, gl.viewportWidth / gl.viewportHeight, 0.1, 1000.0, pMatrix);
+			mat4.identity(mvMatrix);
+
+
 			if (this.skybox != null) {
-				mvPushMatrix();
 				mat4.multiply(mvMatrix, this.rotation);
 				this.skybox.draw();  //TODO uncomment when publish
-				mvPopMatrix();
 			}
 
 			mat4.multiply(mvMatrix, this.trans);
