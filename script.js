@@ -103,14 +103,10 @@ function drawScene()
 {
     renderShadow();
 
-    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     toggleNormalShader(true);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.useProgram(shaderProgram);
     myCamera.draw();
-
     toggleNormalShader(false);
 
 
