@@ -1,6 +1,6 @@
-class skybox extends cube {
+class skybox extends sphere {
 	constructor(parent) {
-		super(parent);
+		super(parent,1);
 	}
 
 	draw() {
@@ -11,6 +11,7 @@ class skybox extends cube {
 				gl.bindTexture(gl.TEXTURE_2D, this.texture);
 				gl.uniform1i(shaderProgram.samplerUniform, 0);// this.texture.bindNumber);
 			}
+			gl.disable(gl.DEPTH_TEST);
 
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
 			gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -18,9 +19,10 @@ class skybox extends cube {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
 			gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.vertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-			gl.uniform1f(shaderProgram.useBlending, false);
-			gl.disable(gl.DEPTH_TEST);
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
+			gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+			gl.uniform1f(shaderProgram.useBlending, false);
 
 			gl.uniform1i(shaderProgram.useLightingUniform, false);
 
