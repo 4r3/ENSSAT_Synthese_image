@@ -5,6 +5,7 @@ class camera extends worldObject {
 		this.isDrawing = false;
 		this.translate([0,-10,0]);
 		this.rotate(Math.PI/2,[1,0,0]);
+		this.compRot = mat4.create();
 
 	}
 
@@ -22,6 +23,8 @@ class camera extends worldObject {
 			}
 
 			mat4.multiply(mvMatrix, this.trans);
+
+			mat4.multiply(mvMatrix, this.compRot);
 
 			mat4.multiply(mvMatrix, this.orbitmat);
 
@@ -46,23 +49,22 @@ class camera extends worldObject {
 	}
 
 	getTransMatrix(parent){
-		var mat;
 		if(parent==null) {
-			mat = mat4.create();
-			mat4.identity(mat);
+			mat4.identity(this.orbitmat);
+			mat4.identity(this.compRot);
 		}
 		else {
-			mat = this.getTransMatrix(parent.parent);
-			mat4.multiply(mat, parent.orbitmat);
-			mat4.multiply(mat, parent.trans);
+			this.getTransMatrix(parent.parent);
+			mat4.multiply(this.orbitmat, parent.orbitmat);
+			mat4.multiply(this.orbitmat, parent.trans);
+			mat4.multiply(this.compRot,parent.orbitmat);
 
 		}
-		return mat;
 	}
 
 	animate(){
-		var mat = this.getTransMatrix(this.parent);
-		this.orbitmat = mat4.inverse(mat);
+		this.getTransMatrix(this.parent);
+		this.orbitmat = mat4.inverse(this.orbitmat);
 	}
 
 	translate(translation) {

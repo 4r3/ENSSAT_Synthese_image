@@ -1,4 +1,4 @@
-class skybox extends sphere {
+class skybox extends cube {
 	constructor(parent) {
 		super(parent,1);
 	}
