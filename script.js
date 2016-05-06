@@ -65,7 +65,7 @@ Re_mercury = 58.6462;
 
 //textures sources
 tex_sun="./img/sun.jpg";
-tex_earth="./img/earth2.jpg";
+tex_earth="./img/earth.jpg";
 tex_moon="./img/moon.gif";
 tex_venus="./img/venus.jpg";
 tex_mercury="./img/mercury.jpg";
@@ -131,16 +131,13 @@ function initWorldObjects()
     myring.texture = initTexture("./img/ring2.jpg");
     myring.translate([0,0,0]);
 
-    //myring = new ring(rootObject,normalizeSize(R_sun),2*normalizeSize(R_sun));
-    //myring.texture = initTexture("./img/ring2.jpg");
-    //myring.translate([0,-1,0]);
-
     var earth = initObject(rootObject,R_earth,D_earth,tex_earth,O_earth,Re_earth);
+    earth.texture2 = initTexture("./img/earth_lights.jpg");
     var moon = initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);
     initObject(rootObject,R_venus,D_venus,tex_venus,O_venus,Re_venus);
     initObject(rootObject,R_mercury,D_mercury,tex_mercury,O_mercury,Re_mercury);
 
-    myCamera.setParent(rootObject);
+    myCamera.setParent(earth);
 
     return rootObject;
 }

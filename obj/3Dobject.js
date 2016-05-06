@@ -13,6 +13,7 @@ class worldObject {
 		this.vertexNormalsBuffer = null;
 		this.toggled = true;
 		this.texture = null;
+		this.texture2 = null;
 
 		this.isLigthSource = true;
 		this.lightinEnabled = 1;
@@ -76,6 +77,16 @@ class worldObject {
 				gl.uniform1i(shaderProgram.samplerUniform, 0);// this.texture.bindNumber);
 			}
 
+			if (this.texture2 == null){
+				gl.uniform1i(shaderProgram.dualTex,0);
+				gl.uniform1i(shaderProgram.sampler2Uniform, 0);
+			}else {
+				gl.uniform1i(shaderProgram.dualTex,1);
+				gl.activeTexture(gl.TEXTURE1);
+				gl.bindTexture(gl.TEXTURE_2D, this.texture2);
+				gl.uniform1i(shaderProgram.sampler2Uniform, 1);
+			}
+
 			mvPushMatrix();
 			mat4.multiply(mvMatrix, this.orbitmat); //rotate on the rootObject position for orbit simulation
 			mat4.multiply(mvMatrix, this.trans);	//place the object at the right distance
@@ -112,9 +123,9 @@ class worldObject {
 
 				gl.uniform3f(
 					shaderProgram.ambientColorUniform,
-					0.2,
-					0.2,
-					0.2
+					0.5,
+					0.5,
+					0.5
 				);//TODO create vars for ambient light
 
 

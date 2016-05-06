@@ -17,6 +17,7 @@ var shader_vertex_source = `
 
 		varying vec2 vTextureCoord;
 		varying vec3 vLightWeighting;
+		varying float isLigthed;
 
 		void main(void)
 		{
@@ -24,12 +25,15 @@ var shader_vertex_source = `
 			gl_Position = uPMatrix * mvPosition;
 			vTextureCoord = aTextureCoord;
 			if (!uUseLighting) {
+			    isLigthed = 1.0;
 				vLightWeighting = vec3(1.0, 1.0, 1.0);
 			} else {
 				vec3 lightDirection = normalize(uPointLightingLocation - mvPosition.xyz);
 
 				vec3 transformedNormal = uNMatrix * aVertexNormal;
-				float directionalLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
+				isLigthed = dot(transformedNormal, lightDirection);
+				float directionalLightWeighting = max(isLigthed, 0.0);
+				
 				vLightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;;
 			}
 		}
@@ -40,17 +44,27 @@ var shader_fragment_source = `
 
 		varying vec2 vTextureCoord;
 		varying vec3 vLightWeighting;
+		varying float isLigthed;
 
 		uniform float uAlpha;
 		uniform bool uUseBlending;
+		uniform bool uDualTex;
 
 		uniform sampler2D uSampler;
+		uniform sampler2D uSampler2;
 
 		void main(void)
 		{
-			mediump vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+		    mediump vec4 textureColor;
+		    float Ligthed = isLigthed;
+		    if(isLigthed<0.0 && uDualTex){
+		        Ligthed = -Ligthed;
+		    	textureColor = texture2D(uSampler2, vec2(vTextureCoord.s, vTextureCoord.t));
+		    }else{
+		        textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+		    }
 			if(!uUseBlending){
-				gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+				gl_FragColor = vec4(textureColor.rgb * Ligthed, textureColor.a);
 			} else {
 				gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a * uAlpha);
 			}
