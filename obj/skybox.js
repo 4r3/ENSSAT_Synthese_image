@@ -11,6 +11,7 @@ class skybox extends sphere {
 				gl.bindTexture(gl.TEXTURE_2D, this.texture);
 				gl.uniform1i(shaderProgram.samplerUniform, 0);// this.texture.bindNumber);
 			}
+			
 			gl.disable(gl.DEPTH_TEST);
 
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
