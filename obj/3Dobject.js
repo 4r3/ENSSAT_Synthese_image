@@ -22,6 +22,7 @@ class worldObject {
 		
 		this.orbitParam = 0;
 		this.revol = 0;
+		this.angle=[0,0,0];
 
 		mat4.identity(this.trans);
 		mat4.identity(this.rotation);
@@ -90,6 +91,15 @@ class worldObject {
 			mvPushMatrix();
 			mat4.multiply(mvMatrix, this.orbitmat); //rotate on the rootObject position for orbit simulation
 			mat4.multiply(mvMatrix, this.trans);	//place the object at the right distance
+
+			var invOrb = mat4.create();
+			mat4.set(this.orbitmat,invOrb);
+			invOrb = mat4.inverse(invOrb);
+			mat4.multiply(mvMatrix,invOrb);
+
+			mat4.rotateX(mvMatrix,this.angle[0]*Math.PI/180);
+			mat4.rotateY(mvMatrix,this.angle[1]*Math.PI/180);
+			mat4.rotateZ(mvMatrix,this.angle[2]*Math.PI/180);
 
 			mvPushMatrix();
 			mat4.multiply(mvMatrix, this.rotation); // used for the revolution of the object, cancelled after draw

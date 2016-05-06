@@ -133,6 +133,8 @@ function initWorldObjects()
 
     var earth = initObject(rootObject,R_earth,D_earth,tex_earth,O_earth,Re_earth);
     earth.texture2 = initTexture("./img/earth_lights.jpg");
+    earth.angle=[0,0,23.4];
+
     var moon = initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);
     initObject(rootObject,R_venus,D_venus,tex_venus,O_venus,Re_venus);
     initObject(rootObject,R_mercury,D_mercury,tex_mercury,O_mercury,Re_mercury);
