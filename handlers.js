@@ -44,7 +44,6 @@ function handleWheel(event)
 
 function handleKeyDown(event)
 {
-    //console.log(event.keyCode);
     event.preventDefault();
     var transmat = mat4.create();
     mat4.identity(transmat);
@@ -93,4 +92,9 @@ function surprise() {
     tempSkybox = myCamera.skybox.texture;
     myCamera.skybox.texture = videoTexture;
     video.play();
+}
+
+function setCamera(pos){
+    var sel = pos.options[pos.selectedIndex].text;
+    myCamera.setParent(planets[sel]);
 }

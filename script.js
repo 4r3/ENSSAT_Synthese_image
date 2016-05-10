@@ -26,6 +26,7 @@ var currentZoom = 1;
 //world
 var rootObject;
 var tempSkybox;
+var planets = [];
 
 //geometry
 var pasLat = 3;

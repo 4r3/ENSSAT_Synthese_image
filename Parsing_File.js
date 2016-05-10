@@ -38,8 +38,7 @@ function CreateUniverse(){
 
 
 function parsing(doc,parent) {
-    console.log(doc);
-    var newObject = new sphere(parent,normalizeSize(doc["Radius"]),doc.light_src);
+    var newObject = new sphere(parent,normalizeSize(doc.Radius),doc.light_src);
     newObject.texture = initTexture(doc.Texture);
 
     if(doc.Texture2 != null){
@@ -65,9 +64,17 @@ function parsing(doc,parent) {
         OrbitObject.texture = newObject.texture;
     }
 
+    planets[doc.Name]=newObject;
+
     for(var i=0; i<doc.Children.length;i++){
         parsing(doc.Children[i],newObject);
     }
+
+    var x = document.getElementById("camAnchor");
+    var option = document.createElement("option");
+    option.text = doc.Name;
+    x.add(option, x[0]);
+    x.selectedIndex = "0";
 
     return newObject;
 }

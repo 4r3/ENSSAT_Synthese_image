@@ -3,7 +3,7 @@ class camera extends worldObject {
 		super(parent);
 		this.skybox = null;
 		this.isDrawing = false;
-		this.translate([0,-10,0]);
+		this.translate([0,-5,0]);
 		this.rotate(Math.PI/2,[1,0,0]);
 		this.compRot = mat4.create();
 
@@ -45,6 +45,9 @@ class camera extends worldObject {
 				this.oldestParent = this.oldestParent.parent;
 			}
 		}
+		mat4.identity(this.trans);
+		this.translate([0,-5,0]);
+		this.rotate(Math.PI/2,[1,0,0]);
 
 	}
 
