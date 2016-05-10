@@ -34,41 +34,6 @@ var tetaMax = 360;
 var phiMax = 90;
 
 
-//radius in km
-R_skybox = 1;
-R_sun = 696342;
-R_earth = 6378;
-R_moon = 1737;
-R_venus = 6051;
-R_mercury = 2439.7;
-
-
-//distance in AU
-D_earth = 1;
-D_moon = 0.00257;
-D_venus = 0.723332;
-D_mercury = 0.387;
-
-//orbit speed in rad/day
-
-O_earth = 2*Math.PI/365;
-O_venus = 2*Math.PI/224.7;
-O_moon = 2*Math.PI/27.32;
-O_mercury = 2*Math.PI/ 87.96934;
-
-//revol speed in rad/day
-Re_sun = 2*Math.PI/29;
-Re_earth = 2*Math.PI;
-Re_venus = 2*Math.PI/-243;
-Re_moon = O_moon;
-Re_mercury = 58.6462;
-
-//textures sources
-tex_sun="./img/sun.jpg";
-tex_earth="./img/earth.jpg";
-tex_moon="./img/moon.gif";
-tex_venus="./img/venus.jpg";
-tex_mercury="./img/mercury.jpg";
 
 
 //scale factor
@@ -107,56 +72,6 @@ function drawScene()
     myCamera.draw();
 }
 
-function initWorldObjects()
-{
-
-    var myskybox = new skybox(null);
-    myskybox.texture = initTexture("./img/stars.jpg");
-
-    myCamera.skybox = myskybox;
-
-    rootObject = new sphere(null,normalizeSize(R_sun),true);
-    rootObject.texture = initTexture(tex_sun);
-    rootObject.revol = Re_sun;
-
-
-    var myAsteroid = new asteroid(rootObject,normalizeSize(R_mercury));
-    myAsteroid.translate([normalizeSize(AU2km(D_mercury/2)),0,0]);
-    myAsteroid.texture = initTexture("./img/asteroid.jpg");
-    myAsteroid.revol = Re_sun;
-
-
-
-    var myring = new ring(rootObject,normalizeSize(R_sun),2*normalizeSize(R_sun));
-    myring.texture = initTexture("./img/ring2.jpg");
-    myring.translate([0,0,0]);
-
-    var earth = initObject(rootObject,R_earth,D_earth,tex_earth,O_earth,Re_earth);
-    earth.texture2 = initTexture("./img/earth_lights.jpg");
-    earth.angle=[0,0,23.4];
-
-    var moon = initObject(earth,R_moon,D_moon,tex_moon,O_moon,Re_moon);
-    initObject(rootObject,R_venus,D_venus,tex_venus,O_venus,Re_venus);
-    initObject(rootObject,R_mercury,D_mercury,tex_mercury,O_mercury,Re_mercury);
-
-    myCamera.setParent(earth);
-
-    return rootObject;
-}
-
-function initObject(parent,radius,distance,texture_src,orbitParam,revol){
-    var newObject = new sphere(parent,normalizeSize(radius));
-    newObject.texture = initTexture(texture_src);
-    newObject.translate([normalizeSize(AU2km(distance)),0,0]);
-    newObject.orbitParam = orbitParam;
-    newObject.revol = revol;
-
-    var OrbitObject = new orbitLine(parent,normalizeSize(AU2km(distance)));
-    OrbitObject.texture = newObject.texture;
-
-    return newObject;
-}
-
 function animate()
 {
     var timeNow = new Date().getTime();
@@ -171,10 +86,12 @@ function animate()
 
 function tick() {
     requestAnimFrame(tick);
-    drawScene();
-    animate();
+    if(rootObject!=null) {
+        drawScene();
+        animate();
 
-    updateTexture();
+        updateTexture();
+    }
 
 }
 
@@ -186,7 +103,9 @@ function webGLStart() {
     initGL(canvas);
     initShaders();
     initTextures();
-    rootObject = initWorldObjects();
+
+    rootObject = null;
+    initWorld();
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);

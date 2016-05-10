@@ -1,0 +1,59 @@
+{
+  "Name": "Sun",
+  "Radius": "696342",
+  "O_Distance": "0",
+  "O_Speed": "0",
+  "Tilt": "0",
+  "Rot_Speed": "29",
+  "light_src": true,
+  "Texture":"./img/sun.jpg",
+  "Children": [
+    {
+      "Name": "Earth",
+      "Radius": "6378",
+      "O_Distance": "1",
+      "O_Speed": "365",
+      "Tilt": "23.4",
+      "Rot_Speed": "1",
+      "light_src": false,
+      "Texture": "./img/earth.jpg",
+      "Texture2": "./img/earth_lights.jpg",
+      "Children": [
+        {
+          "Name": "Moon",
+          "Radius": "1737",
+          "O_Distance": "0.00257",
+          "O_Speed": "27.32",
+          "Tilt": "0",
+          "Rot_Speed": "27.32",
+          "light_src": false,
+          "Texture":"./img/moon.gif",
+          "Children": ""
+
+        }
+      ]
+    },
+    {
+      "Name": "Venus",
+      "Radius": "6051",
+      "O_Distance": "0.723332",
+      "O_Speed": "224.7",
+      "Tilt": "0",
+      "Rot_Speed": "-243",
+      "light_src": false,
+      "Texture":"./img/venus.jpg",
+      "Children": ""
+    },
+    {
+      "Name": "Mercury",
+      "Radius": "2439.7",
+      "O_Distance": "0.387",
+      "O_Speed": "87.96934",
+      "Tilt": "0",
+      "Rot_Speed": "58.6462",
+      "light_src": false,
+      "Texture":"./img/mercury.jpg",
+      "Children": ""
+    }
+  ]
+}
