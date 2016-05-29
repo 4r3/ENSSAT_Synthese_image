@@ -3,13 +3,15 @@ class skybox extends cube {
 		super(parent,1);
 	}
 
+	/**
+	 * method that draw the skybox, this function disable depth test draw the skybox then re-enable it
+	 */
 	draw() {
 		if (this.toggled) {
 			if (this.texture != null) {
-				//gl.activeTexture(this.texture.getbind()); //TODO find how to use
 				gl.activeTexture(gl.TEXTURE0);
 				gl.bindTexture(gl.TEXTURE_2D, this.texture);
-				gl.uniform1i(shaderProgram.samplerUniform, 0);// this.texture.bindNumber);
+				gl.uniform1i(shaderProgram.samplerUniform, 0);
 			}
 			
 			gl.disable(gl.DEPTH_TEST);

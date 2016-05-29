@@ -1,4 +1,11 @@
 class ring extends worldObject{
+	/**
+	 * constructor of the ring object, create a transparent ring on the parent
+	 *
+	 * @param parent
+	 * @param Rmn
+	 * @param Rmx
+     */
 	constructor(parent,Rmn,Rmx)
 	{
 		super(parent);
@@ -6,10 +13,13 @@ class ring extends worldObject{
 		this.isLigthSource = false;
 		this.blending = 1;
 		this.alpha = 50;
-
-		//TODO add normal calculation
 	}
 
+	/**
+	 * method that create the ring vertices,normals, and index
+	 * @param Rmn
+	 * @param Rmx
+     */
 	initBuffers(Rmn,Rmx)
 	{
 		this.vertexPositionBuffer = gl.createBuffer();
@@ -79,43 +89,16 @@ class ring extends worldObject{
 		this.vertexNormalsBuffer.numItem = nbVertice;
 	}
 
+	/**
+	 * function that calculate the texture coordinates for the passed position
+	 * @param longi
+	 * @param R
+	 * @param Rmn
+	 * @param Rmx
+     * @returns {*[]}
+     */
 	calcTextureCoords(longi,R,Rmn,Rmx){
 		return [1-((Rmx-R) / (Rmx - Rmn)),30*longi / tetaMax];
 	}
-
-	getTriangleNormal(a, b, c) {
-		var normal,edge1,edge2;
-		edge1 = vec3.subtract(b,a);
-		edge2 = vec3.subtract(c,a);
-		normal = vec3.cross(edge1,edge2);
-		return normal;
-	}
-
-	getVertice(vertices,i){
-		return [vertices[i*3],vertices[i*3+1],vertices[i*3+2]];
-	}
-
-	calcNormals(normals,vertices,VertexIndices,Ke){
-		for(var i=0;i<VertexIndices.length;i+=3){
-			var a = this.getVertice(vertices,VertexIndices[i]);
-			var b = this.getVertice(vertices,VertexIndices[i+1]);
-			var c = this.getVertice(vertices,VertexIndices[i+2]);
-			var norm = this.getTriangleNormal(b,c,a);
-
-			for(var j=0;j<3;j++){
-				for(var k=0;k<3;k++){
-					normals[VertexIndices[i+j]*3+k]+=norm[k];
-				}
-			}
-		}
-
-		for(var i=0;i<vertices.length/3;i++){
-			var norm = this.getVertice(normals,i);
-			norm = vec3.normalize(norm);
-			normals[i*3]=norm[0]*Ke;
-			normals[i*3+1]=norm[1]*Ke;
-			normals[i*3+2]=norm[2]*Ke;
-		}
-		return normals;
-	}
+	
 }

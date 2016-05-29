@@ -6,6 +6,11 @@ class sphere extends worldObject {
 		this.initBuffers(R, ligthEmitter);
 	}
 
+	/**
+	 * function that generate a sphere of R size
+	 * @param R
+	 * @param ligthEmitter
+     */
 	initBuffers(R, ligthEmitter) {
 		var Ke = 1;
 		if (ligthEmitter) {
@@ -72,6 +77,12 @@ class sphere extends worldObject {
 		this.vertexNormalsBuffer.numItem = nbVertice;
 	}
 
+	/**
+	 * method that calculate the coordinate for the texture
+	 * @param longi
+	 * @param lat
+	 * @returns {*[]}
+     */
 	calcTextureCoords(longi, lat) {
 		return [longi / tetaMax, (90 + lat) / (90 + phiMax)];
 	}
