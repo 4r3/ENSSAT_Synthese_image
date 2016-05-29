@@ -1,5 +1,9 @@
 
 class worldObject {
+	/**
+	 * worldObject constructor, will initialise all the field of the object
+	 * @param parent
+     */
 	constructor(parent) {
 		this.parent = null;
 		this.trans = mat4.create();
@@ -32,10 +36,18 @@ class worldObject {
 
 	}
 
+	/**
+	 * method that add a a child to the world object
+	 * @param child
+     */
 	addChild(child) {
 		this.children.push(child);
 	}
 
+	/**
+	 * method that remove a child to the object
+	 * @param child
+     */
 	remChild(child){
 		var index = this.children.indexOf(child);
 		if(index > -1){
@@ -43,6 +55,10 @@ class worldObject {
 		}
 	}
 
+	/**
+	 * method that set the parent of a function
+	 * @param parent
+     */
 	setParent(parent){
 		if(this.parent!=null){
 			this.parent.remChild(this);
@@ -57,10 +73,20 @@ class worldObject {
 		mat4.translate(this.trans, translation);
 	}
 
+	/**
+	 * method that manage the revolution of the object on around his parent
+	 * @param rotation
+	 * @param axis
+     */
 	orbit(rotation, axis) {
 		mat4.rotate(this.orbitmat, rotation, axis);
 	}
 
+	/**
+	 * method that manage the boct rotation on it's axis
+	 * @param rotation
+	 * @param axis
+     */
 	rotate(rotation, axis) {
 		mat4.rotate(this.rotation, rotation, axis);
 	}
@@ -69,15 +95,21 @@ class worldObject {
 		mat4.scale(this.trans, scale);
 	}
 
+	/**
+	 * function that draw the object
+	 */
 	draw() {
 		if (this.toggled) {
+			//if a texture is set, then we will use it
+			// else the program will use the last used texture
 			if (this.texture != null) {
-				//gl.activeTexture(this.texture.getbind()); //TODO find how to use
 				gl.activeTexture(gl.TEXTURE0);
 				gl.bindTexture(gl.TEXTURE_2D, this.texture);
-				gl.uniform1i(shaderProgram.samplerUniform, 0);// this.texture.bindNumber);
+				gl.uniform1i(shaderProgram.samplerUniform, 0);
 			}
 
+			//if a second texture is set then dual texturing will be used
+			//else the second texture will be the same that the first
 			if (this.texture2 == null){
 				gl.uniform1i(shaderProgram.dualTex,0);
 				gl.uniform1i(shaderProgram.sampler2Uniform, 0);
@@ -87,16 +119,17 @@ class worldObject {
 				gl.bindTexture(gl.TEXTURE_2D, this.texture2);
 				gl.uniform1i(shaderProgram.sampler2Uniform, 1);
 			}
-
 			mvPushMatrix();
 			mat4.multiply(mvMatrix, this.orbitmat); //rotate on the rootObject position for orbit simulation
 			mat4.multiply(mvMatrix, this.trans);	//place the object at the right distance
+
 
 			var invOrb = mat4.create();
 			mat4.set(this.orbitmat,invOrb);
 			invOrb = mat4.inverse(invOrb);
 			mat4.multiply(mvMatrix,invOrb);
 
+			//rotation axis of the planet
 			mat4.rotateX(mvMatrix,this.angle[0]*Math.PI/180);
 			mat4.rotateY(mvMatrix,this.angle[1]*Math.PI/180);
 			mat4.rotateZ(mvMatrix,this.angle[2]*Math.PI/180);
@@ -110,6 +143,7 @@ class worldObject {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
 			gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.vertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+			//transparency management
 			gl.uniform1f(shaderProgram.useBlending, this.blending);
 			if (this.blending) {
 				gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
@@ -123,22 +157,26 @@ class worldObject {
 			}
 
 
+			//lighting management
 			gl.uniform1i(shaderProgram.useLightingUniform, this.lightinEnabled);
 			if (this.lightinEnabled) {
 				gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalsBuffer);
 				gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalsBuffer.itemSize, gl.FLOAT, false, 0, 0);
 			}
 
+			// if the object is a light source then the wrogram will
+			// declare a light source in its position
 			if (this.isLigthSource) {
 
+				//uniform ligth intensity
 				gl.uniform3f(
 					shaderProgram.ambientColorUniform,
 					0.5,
 					0.5,
 					0.5
-				);//TODO create vars for ambient light
+				);
 
-
+				//light position
 				gl.uniform3f(
 					shaderProgram.pointLightingLocationUniform,
 					mvMatrix[12],
@@ -146,12 +184,13 @@ class worldObject {
 					mvMatrix[14]
 				);
 
+				//light intensity
 				gl.uniform3f(
 					shaderProgram.pointLightingColorUniform,
 					1,
 					1,
 					1
-				);//TODO create vars for directional light
+				);
 			}
 
 			setMatrixUniforms();
@@ -173,6 +212,13 @@ class worldObject {
 		}
 	}
 
+	/**
+	 * method tha calculade the normal between 3 points in the 3d space
+	 * @param a
+	 * @param b
+	 * @param c
+     * @returns {vec3|*}
+     */
 	getTriangleNormal(a, b, c) {
 		var normal,edge1,edge2;
 		edge1 = vec3.subtract(b,a);
@@ -181,10 +227,24 @@ class worldObject {
 		return normal;
 	}
 
+	/**
+	 * method that return the point in the 3d space at the i position in the vertice array
+	 * @param vertices
+	 * @param i
+	 * @returns {*[]}
+     */
 	getVertice(vertices,i){
 		return [vertices[i*3],vertices[i*3+1],vertices[i*3+2]];
 	}
 
+	/**
+	 * method that calculate the normals for all the points of the vertice buffer
+	 * @param normals
+	 * @param vertices
+	 * @param VertexIndices
+	 * @param Ke
+     * @returns {*}
+     */
 	calcNormals(normals,vertices,VertexIndices,Ke){
 		for(var i=0;i<VertexIndices.length*3;i+=3){
 			var a = this.getVertice(vertices,VertexIndices[i]);
@@ -210,6 +270,10 @@ class worldObject {
 		return normals;
 	}
 
+	/**
+	 * method that calculate the next position of the planet from the last time
+	 * @param elapsedTime
+     */
 	animate(elapsedTime) {
 		//animate children
 

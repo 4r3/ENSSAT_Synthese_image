@@ -77,7 +77,6 @@ function handleKeyDown(event)
 
 }
 
-
 function drawCombo(list)
 {
     drawStyle = list.selectedIndex;

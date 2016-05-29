@@ -1,5 +1,10 @@
 class asteroid extends worldObject{
-
+	/**
+	 * constructor of the asteroid, generate the random shape of the asteroid
+	 * @param parent
+	 * @param R
+	 * @param ligthEmitter
+     */
 	constructor(parent, R, ligthEmitter = false) {
 		super(parent);
 		this.isLigthSource = ligthEmitter;
@@ -8,6 +13,11 @@ class asteroid extends worldObject{
 		this.initBuffers(R, ligthEmitter);
 	}
 
+	/**
+	 * function that create the asteroid and initialize its buffers
+	 * @param R
+	 * @param ligthEmitter
+     */
 	initBuffers(R, ligthEmitter) {
 		var Ke = 1;
 		if (ligthEmitter) {
@@ -74,10 +84,23 @@ class asteroid extends worldObject{
 		this.vertexNormalsBuffer.numItem = nbVertice;
 	}
 
+	/**
+	 * method that calculate the texture position on the object
+	 * @param longi
+	 * @param lat
+	 * @returns {*[]}
+     */
 	calcTextureCoords(longi,lat){
 		return [10*longi / tetaMax, 10*(90 + lat) / (90 + phiMax)];
 	}
 
+	/**
+	 * method that calculate the vertice position acordingly to the random parameters
+	 * @param longi
+	 * @param lat
+	 * @param R
+     * @returns {*}
+     */
 	calcVertice(longi, lat, R){
 		var K=0;
 		for(var i = 0; i<this.randSeed.length;i+=4){
@@ -91,6 +114,16 @@ class asteroid extends worldObject{
 		return pol2Cart(longi, lat, R);
 	}
 
+	/**
+	 * method that calculate the deformation coeficient to apply to the vertice
+	 * @param longi
+	 * @param lat
+	 * @param espLong
+	 * @param espLat
+	 * @param eTyp
+	 * @param heigth
+     * @returns {number}
+     */
 	calcCoef(longi, lat,espLong = 0,espLat = 0,eTyp = 10, heigth = 1){
 
 		var coef = 1;
@@ -110,6 +143,9 @@ class asteroid extends worldObject{
 		return coef;
 	}
 
+	/**
+	 * function that generate the random parameters of the asteroid
+	 */
 	genRandSeed(){
 		for(var i = 0; i<=100; i++){
 			var long = Math.random() * 360;

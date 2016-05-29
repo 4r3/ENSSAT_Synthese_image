@@ -43,8 +43,10 @@ Ks = 1/2;
 Ks2 = 1000;
 
 
-
-//SHADERS
+/**
+ * function that initialise a webGl context
+ * @param canvas
+ */
 function initGL(canvas)
 {
     try
@@ -64,7 +66,9 @@ function initGL(canvas)
 
 //INITGL
 
-
+/**
+ * fonction that initialise the draw of the scene from the camera point of view
+ */
 function drawScene()
 {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
@@ -73,6 +77,10 @@ function drawScene()
     myCamera.draw();
 }
 
+/**
+ * funtion that compute the quantity of animation to do and which start the animation
+ * computation for the scene objects
+ */
 function animate()
 {
     var timeNow = new Date().getTime();
@@ -85,17 +93,21 @@ function animate()
     lastTime = timeNow;
 }
 
+/**
+ * animation loop, this function call itself to animate and draw the scene
+ */
 function tick() {
     requestAnimFrame(tick);
-    if(rootObject!=null) {
-        drawScene();
-        animate();
+    drawScene();
+    animate();
 
-        updateTexture();
-    }
-
+    updateTexture();
 }
 
+/**
+ * function that is called to initialize the script, it will init the web gl context,
+ * the shaders, the textures and the objects of the scene and the user action handlers
+ */
 function webGLStart() {
 
     var canvas = document.getElementById("lesson03-canvas");

@@ -1,9 +1,18 @@
 class orbitLine extends worldObject {
+	/**
+	 * constructor of the line object
+	 * @param parent
+	 * @param R
+     */
 	constructor(parent, R) {
 		super(parent)
 		this.initBuffers(R);
 	}
 
+	/**
+	 * method that create the orbitline vertices
+	 * @param R
+     */
 	initBuffers(R) {
 		this.vertexPositionBuffer = gl.createBuffer();
 		this.vertexTextureCoordBuffer = gl.createBuffer();
@@ -35,13 +44,15 @@ class orbitLine extends worldObject {
 		this.vertexTextureCoordBuffer.numItems = nbVertice;
 	}
 
+	/** function that  draw the orbit line
+	 *
+	 */
 	draw() {
 		if (this.toggled) {
 			if (this.texture != null) {
-				//gl.activeTexture(this.texture.getbind()); //TODO find how to use
 				gl.activeTexture(gl.TEXTURE0);
 				gl.bindTexture(gl.TEXTURE_2D, this.texture);
-				gl.uniform1i(shaderProgram.samplerUniform, 0);// this.texture.bindNumber);
+				gl.uniform1i(shaderProgram.samplerUniform, 0);
 			}
 
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);

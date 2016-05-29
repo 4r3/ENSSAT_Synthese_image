@@ -1,14 +1,21 @@
 class camera extends worldObject {
+	/**
+	 * constructor of the camera
+	 * @param parent
+     */
 	constructor(parent) {
 		super(parent);
 		this.skybox = null;
 		this.isDrawing = false;
-		this.translate([0,-5,0]);
+		this.translate([0,-15,0]);
 		this.rotate(Math.PI/2,[1,0,0]);
 		this.compRot = mat4.create();
 
 	}
 
+	/**
+	 * function that lanch the drawing from the camera position
+	 */
 	draw() {
 		if(!this.isDrawing) {
 			this.isDrawing = true;
@@ -19,7 +26,7 @@ class camera extends worldObject {
 
 			if (this.skybox != null) {
 				mat4.multiply(mvMatrix, this.rotation);
-				this.skybox.draw();  //TODO uncomment when publish
+				this.skybox.draw();
 			}
 
 			mat4.multiply(mvMatrix, this.trans);
@@ -37,6 +44,10 @@ class camera extends worldObject {
 
 	}
 
+	/**
+	 * replace the camera above the selected object
+	 * @param parent
+     */
 	setParent(parent){
 		super.setParent(parent);
 		if(parent!=null) {
@@ -46,7 +57,8 @@ class camera extends worldObject {
 			}
 		}
 		mat4.identity(this.trans);
-		this.translate([0,-5,0]);
+		mat4.identity(this)
+		this.translate([0,-15,0]);
 		this.rotate(Math.PI/2,[1,0,0]);
 
 	}
@@ -65,6 +77,9 @@ class camera extends worldObject {
 		}
 	}
 
+	/**
+	 * method that update the position of the camera relatively to the rootobject
+ 	 */
 	animate(){
 		this.getTransMatrix(this.parent);
 		this.orbitmat = mat4.inverse(this.orbitmat);
@@ -76,13 +91,12 @@ class camera extends worldObject {
 		this.trans[14] += translation[2];
 
 	}
-
+	
 	rotate(rotation, axis) {
 		var newMatrix = mat4.create();
 		mat4.identity(newMatrix);
 		mat4.rotate(newMatrix, rotation, axis);
 		mat4.multiply(newMatrix, this.trans);
-
 		mat4.set(newMatrix, this.trans);
 	}
 }

@@ -17,6 +17,8 @@ function pol2Cart(longi, lat,R)
     ];
 }
 
+//distance and size normalisation functions
+
 function AU2km(Au) {
     return Au * 149597870.7;
 }

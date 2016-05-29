@@ -4,6 +4,9 @@ class cube extends worldObject {
 		this.initBuffers();
 	}
 
+	/**
+     * function that intitialize the cube values
+	 */
 	initBuffers() {
 		this.vertexPositionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);

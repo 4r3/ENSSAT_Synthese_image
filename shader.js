@@ -2,9 +2,12 @@
  * Created by 4r3 on 23/04/16.
  */
 
-
-
-
+/**
+ * function that load the shader form the html this function is deprecated
+ * @param gl
+ * @param id
+ * @returns {*}
+ */
 function getShader(gl, id)
 {
     var shaderScript = document.getElementById(id);
@@ -52,6 +55,13 @@ function getShader(gl, id)
     return shader;
 }
 
+/**function that load the shader from a variables
+ *
+ * @param source
+ * @param type
+ * @param typeString
+ * @returns {*}
+ */
 var get_shader=function(source, type, typeString) {
     var shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -63,6 +73,9 @@ var get_shader=function(source, type, typeString) {
     return shader;
 };
 
+/**
+ * function that initiate the shaders for the project
+ */
 function initShaders()
 {
     var vertexShader=get_shader(shader_vertex_source, gl.VERTEX_SHADER, "VERTEX");

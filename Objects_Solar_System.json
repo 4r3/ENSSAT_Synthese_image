@@ -54,6 +54,61 @@
       "light_src": false,
       "Texture":"./img/mercury.jpg",
       "Children": ""
+    },
+    {
+      "Name": "Mars",
+      "Radius": "3396",
+      "O_Distance": "1.52366231",
+      "O_Speed": "686.9",
+      "Tilt": "0",
+      "Rot_Speed": "1.025957",
+      "light_src": false,
+      "Texture":"./img/mars.jpg",
+      "Children": ""
+    },
+    {
+      "Name": "Jupiter",
+      "Radius": "71492",
+      "O_Distance": "5.20336",
+      "O_Speed": "4335",
+      "Tilt": "0",
+      "Rot_Speed": "0.41351",
+      "light_src": false,
+      "Texture":"./img/jupiter.jpg",
+      "Children": ""
+    },
+      {
+      "Name": "Saturn",
+      "Radius": "60268",
+      "O_Distance": "9.554909",
+      "O_Speed": "10757.7365",
+      "Tilt": "0",
+      "Rot_Speed": "0.448",
+      "light_src": false,
+      "Texture":"./img/saturn.png",
+      "Children": ""
+    },
+      {
+      "Name": "Uranus",
+      "Radius": "25559",
+      "O_Distance": "19.189165",
+      "O_Speed": "30687.15",
+      "Tilt": "0",
+      "Rot_Speed": "-0.718",
+      "light_src": false,
+      "Texture":"./img/uranus.jpg",
+      "Children": ""
+    },
+      {
+      "Name": "Neptune",
+      "Radius": "24764",
+      "O_Distance": "30.10366151",
+      "O_Speed": "60224.9036",
+      "Tilt": "0",
+      "Rot_Speed": "0.67125",
+      "light_src": false,
+      "Texture":"./img/neptune.jpg",
+      "Children": ""
     }
   ]
 }
